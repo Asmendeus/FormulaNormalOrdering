@@ -1,0 +1,7 @@
+name = "FormulaNormalOrdering"
+uuid = "b6870bba-5d43-48d0-b8e3-ee94aafc0d8b"
+authors = ["Asmendeus <108558333+Asmendeus@users.noreply.github.com>"]
+version = "0.1.0"
+
+[deps]
+LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
