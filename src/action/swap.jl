@@ -1,9 +1,9 @@
 function swap(ops::Tuple{Union{AbstractBosonOperator, AbstractFermionOperator}, Union{AbstractBosonOperator, AbstractFermionOperator}})
     name = ops[2].name * ops[1].name
     if all(isBoson, ops)
-        return 1
+        # TODO
     elseif all(isFermion, ops)
-        return 1
+        # TODO
     else
         return SGOp(name, [ops[2], ops[1]], 1)
     end

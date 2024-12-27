@@ -44,7 +44,15 @@ function text(op::SingleGeneralOperator)::LaTeXString
 end
 
 function text(op::MultiGeneralOperator)::LaTeXString
-
+    str = string(text(op.ops[1]))
+    for i in 2:length(op.ops)
+        if text(op.ops[i])[1] != '-'
+            str *= " + " * string(text(op.ops[i]))
+        else
+            str *= " - " * string(text(op.ops[i]))[2:end]
+        end
+    end
+    return str
 end
 
 
