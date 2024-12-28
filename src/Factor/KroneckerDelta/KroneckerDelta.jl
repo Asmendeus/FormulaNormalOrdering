@@ -1,21 +1,29 @@
 """
-    struct KroneckerDelta{T} <: AbstractKroneckerDelta where T<:Union{Symbol, AbstractString, Number}
+    struct KroneckerDelta{N, T, S} <: AbstractKroneckerDelta where {N, T, S <: AbstractSubscript{T}}
         name::Union{AbstractString, Symbol}
-        subscript::NTuple{2, T}
-        factor::Union{Number, GeneralFactor}
+        subscript::NTuple{N, S}
+        factor::Union{Number, AbstractGeneralFactor}
     end
 
 # Fields
-- `name::Union{AbstractString, Symbol}`: "1", "0" or LaTeXString("\\delta_{\$(subscript[1]),\$(subscript[2])}")
-- `subscript::NTuple{2, T}`
-- `factor::Union{Number, GeneralFactor}`
+- `name::Union{AbstractString, Symbol}`: recommanded names are `:δ`, `"\\delta"`
+- `subscript::NTuple{N, S}`
+- `factor::Union{Number, AbstractGeneralFactor}`
+
+# Usage
+`T` represents the parameter dimension of the subscript.
+A `KroneckerDelta` will be introduced when swapping two annihilation/creation operators.
+If different `KroneckerDelta` have the same `T`, they multiply together to be a new `KroneckerDelta`
+with the `T`, otherwise the product will become a `ProductKroneckerDelta`.
 """
-struct KroneckerDelta{T} <: AbstractKroneckerDelta where T<:Union{Symbol, AbstractString, Number}
+struct KroneckerDelta{N, T, S} <: AbstractKroneckerDelta where {N, T, S <: AbstractSubscript{T}}
     name::Union{AbstractString, Symbol}
-    subscript::NTuple{2, T}
-    factor::Union{Number, GeneralFactor}
-    function KroneckerDelta(name::Union{AbstractString, Symbol}, subscript::NTuple{2, T}, factor::Union{Number, GeneralFactor}=1) where T<:Union{Symbol, AbstractString, Number}
-        return new{T}(name, subscript, factor)
+    subscript::NTuple{N, S}
+    factor::Union{Number, AbstractGeneralFactor}
+
+    function KroneckerDelta(name::Union{AbstractString, Symbol}, subscript::NTuple{N, S}, factor::Union{Number, AbstractGeneralFactor}) where {N, T, S <: AbstractSubscript{T}}
+        @assert N > 1
+        return new{N, T, S}(name, subscript, factor)
     end
 end
 const KDelta = KroneckerDelta

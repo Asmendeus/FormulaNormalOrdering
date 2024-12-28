@@ -1,5 +1,5 @@
 """
-    abstract type AbstractKroneckerDelta
+    abstract type AbstractKroneckerDelta <: AbstractFactor end
 
 Abstract type of Kronecker Delta.
 """

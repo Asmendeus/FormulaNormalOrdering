@@ -1,30 +1,31 @@
 text(fac::Number)::LaTeXString = string(fac)
-text(fac::GeneralFactor)::LaTeXString = string(fac.factor) * " * " * string(fac.name)
+text(fac::NumberFactor)::LaTeXString = string(fac.factor) * " * " * string(fac.name)
 function text(fac::KroneckerDelta{T})::LaTeXString where T<:Union{Symbol, AbstractString, Number}
-    return string(text(fac.factor)) * " * " * string(fac.name) * "_{$(_string_subscript(op.subscript))}"
+    return string(text(fac.factor)) * " * " * string(fac.name) * "_{$(_string_subscript(op.subscript.subscript))}"
 end
-function text(fac::GeneralKroneckerDelta)::LaTeXString
+function text(fac::ProductKroneckerDelta)::LaTeXString
     str = string(text(fac.factor)) * " * "
     for subpair in fac.subscript
-        str *= string(fac.name) * "_{$(_string_subscript(subpair))}"
+        str *= string(fac.name) * "_{$(_string_subscript(subpair.subscript))}"
     end
     return str
 end
 
+
 function text(op::Union{BosonAnnihilationOperator, FermionAnnihilationOperator})::LaTeXString
-    return string(op.name) * "_{$(_string_subscript(op.subscript))}"
+    return string(op.name) * "_{$(_string_subscript(op.subscript.subscript))}"
 end
 function text(op::Union{BosonCreationOperator, FermionCreationOperator})::LaTeXString
-    return string(op.name) * "^\\dag" * "_{$(_string_subscript(op.subscript))}"
+    return string(op.name) * "^\\dag" * "_{$(_string_subscript(op.subscript.subscript))}"
 end
-function text(op::SingleGeneralOperator)::LaTeXString
+function text(op::GeneralSingleOperator)::LaTeXString
     str = string(text(op.factor)) * " * "
     for o in op.ops
         str *= string(text(o))
     end
     return str
 end
-function text(op::MultiGeneralOperator)::LaTeXString
+function text(op::GeneralMultiOperator)::LaTeXString
     str = string(text(op.ops[1]))
     for i in 2:length(op.ops)
         if text(op.ops[i])[1] != '-'
