@@ -1,9 +1,17 @@
 module FormulaNormalOrdering
 
+using DataStructures
 using LaTeXStrings
 
-# =============== Subscript ===============
-export AbstractSubscript
+################# SubscriptType #################
+const SymbolType = Symbol
+const CertainType = Union{AbstractString, Number}
+
+export SymbolType, CertainType
+
+
+################# Subscript #################
+export AbstractSubscript, getSubDim, getSubType
 include("Subscript/AbstractSubscript.jl")
 
 export GeneralSubscript, GSubscript
@@ -11,7 +19,7 @@ export Site, Spin, Orbital, Layer
 include("Subscript/GeneralSubscript.jl")
 
 
-# =============== Factor ===============
+################# Factor #################
 export AbstractFactor
 include("Factor/AbstractFactor.jl")
 
@@ -28,7 +36,7 @@ export ProductKroneckerDelta, PKDelta
 include("Factor/KroneckerDelta/ProductKroneckerDelta.jl")
 
 
-# =============== Operator ===============
+################# Operator #################
 export AbstractOperator
 include("Operator/AbstractOperator.jl")
 
@@ -54,16 +62,19 @@ export GeneralMultiOperator, GMOp
 include("Operator/GeneralOperator/GeneralMultiOperator.jl")
 
 
-# =============== action ===============
+################# action #################
 export text
 include("action/text.jl")
 
 include("action/base.jl")
 
 export isSubscript, isGSubscript
+export isFactor, isNumber, isNFactor, isKDelta, isGKDelta
 export isOperator, isBoson, isBAOp, isBCOp, isFermion, isFAOp, isFCOp, isGeneral, isGSOp, isGMOp
-export isFactor, isNumber, isNFactor, isKDelta, isGKDelta, value
 include("action/tools.jl")
+
+export value
+include("action/value.jl")
 
 export swap
 include("action/swap.jl")

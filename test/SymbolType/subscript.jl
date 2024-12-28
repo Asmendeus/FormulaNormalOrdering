@@ -11,4 +11,7 @@ orb2 = Orbital(:α′)
 
 @assert isSubscript(σ1)
 @assert isGSubscript(σ1)
-@assert eltype(σ1) == :spin
+@assert getSubDim(σ1) == :spin
+@assert getSubType(σ1) <: Symbol
+
+cellsite{S} = GSubscript{:cellsite, S}

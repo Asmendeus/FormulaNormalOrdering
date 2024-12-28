@@ -1,22 +1,28 @@
+# =============== Subscript ===============
+text(sub::GeneralSubscript) = string(sub.subscript)
+
+
+# =============== Factor ===============
 text(fac::Number)::LaTeXString = string(fac)
 text(fac::NumberFactor)::LaTeXString = string(fac.factor) * " * " * string(fac.name)
-function text(fac::KroneckerDelta{T})::LaTeXString where T<:Union{Symbol, AbstractString, Number}
-    return string(text(fac.factor)) * " * " * string(fac.name) * "_{$(_string_subscript(op.subscript.subscript))}"
+function text(fac::KroneckerDelta{N, T, S})::LaTeXString where {N, T, S}
+    return string(text(fac.factor)) * " * " * string(fac.name) * "_{$(_string_subscript(fac.subscript))}"
 end
-function text(fac::ProductKroneckerDelta)::LaTeXString
+function text(fac::ProductKroneckerDelta{T})::LaTeXString where T
     str = string(text(fac.factor)) * " * "
     for subpair in fac.subscript
-        str *= string(fac.name) * "_{$(_string_subscript(subpair.subscript))}"
+        str *= string(fac.name) * "_{$(_string_subscript(subpair))}"
     end
     return str
 end
 
 
+# =============== Operator ===============
 function text(op::Union{BosonAnnihilationOperator, FermionAnnihilationOperator})::LaTeXString
-    return string(op.name) * "_{$(_string_subscript(op.subscript.subscript))}"
+    return string(op.name) * "_{$(_string_subscript(op.subscript))}"
 end
 function text(op::Union{BosonCreationOperator, FermionCreationOperator})::LaTeXString
-    return string(op.name) * "^\\dag" * "_{$(_string_subscript(op.subscript.subscript))}"
+    return string(op.name) * "^\\dag" * "_{$(_string_subscript(op.subscript))}"
 end
 function text(op::GeneralSingleOperator)::LaTeXString
     str = string(text(op.factor)) * " * "
@@ -38,12 +44,10 @@ function text(op::GeneralMultiOperator)::LaTeXString
 end
 
 
-function _string_subscript(subscript::Tuple{Vararg{Union{Symbol, AbstractString, Number}}})::String
-    @assert !isempty(subscript) "The subscript is empty!"
-    str = string(subscript[1])
+function _string_subscript(subscript::Tuple{Vararg{AbstractSubscript}})::String
+    str = string(text(subscript[1]))
     for item in subscript[2:end]
-        str *= ","
-        str *= typeof(item) <: AbstractString ? item : string(item)
+        str *= "," * string(text(item))
     end
     return str
 end

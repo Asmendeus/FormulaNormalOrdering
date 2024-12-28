@@ -1,21 +1,21 @@
 """
-    struct GeneralSubscript{T, S} <: AbstractSubscript{T} where S <: Union{Symbol, AbstractString, Number}
+    struct GeneralSubscript{T, S} <: AbstractSubscript{T} where S <: Union{SymbolType, CertainType}
         subscript::S
     end
 
 # Fields
-- `subscript::Union{Symbol, AbstractString, Number}`: the certain value of the subscript.
+- `subscript::Union{SymbolType, CertainType}`: the value of the subscript.
 
 # Usage
 Comparisons can only be made when the two subscripts are in the same parameter dimension `T`.
-If `S <: Symbol`, the degree of freedom of the parameter dimension `T` is symbolically represented;
-else `S <: Union{AbstractString, Number}`, the value of the subscript has a clear meaning.
+If `S <: SymbolType`, the degree of freedom of the parameter dimension `T` is symbolically represented;
+otherwise `S <: CertainType`, the value of the subscript has a clear meaning.
 See the README file for more details.
 """
-struct GeneralSubscript{T, S} <: AbstractSubscript{T} where S <: Union{Symbol, AbstractString, Number}
+struct GeneralSubscript{T, S} <: AbstractSubscript{T, S}
     subscript::S
 
-    function GeneralSubscript{T}(subscript::S) where {T, S <: Union{Symbol, AbstractString, Number}}
+    function GeneralSubscript{T}(subscript::S) where {T, S <: Union{SymbolType, CertainType}}
         return new{T, S}(subscript)
     end
 end
