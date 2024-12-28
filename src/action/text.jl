@@ -1,48 +1,29 @@
+text(fac::Number)::LaTeXString = string(fac)
+text(fac::GeneralFactor)::LaTeXString = string(fac.factor) * " * " * string(fac.name)
+function text(fac::KroneckerDelta{T})::LaTeXString where T<:Union{Symbol, AbstractString, Number}
+    return string(text(fac.factor)) * " * " * string(fac.name) * "_{$(_string_subscript(op.subscript))}"
+end
+function text(fac::GeneralKroneckerDelta)::LaTeXString
+    str = string(text(fac.factor)) * " * "
+    for subpair in fac.subscript
+        str *= string(fac.name) * "_{$(_string_subscript(subpair))}"
+    end
+    return str
+end
+
 function text(op::Union{BosonAnnihilationOperator, FermionAnnihilationOperator})::LaTeXString
     return string(op.name) * "_{$(_string_subscript(op.subscript))}"
 end
 function text(op::Union{BosonCreationOperator, FermionCreationOperator})::LaTeXString
     return string(op.name) * "^\\dag" * "_{$(_string_subscript(op.subscript))}"
 end
-
-function text(op::KroneckerDelta{T})::LaTeXString where T<:Union{Symbol, AbstractString, Number}
-    if op.subscript[1] == op.subscript[2]
-        return "$(op.fac)"
-    else
-        if T <: Symbol
-            return string(op.fac) * " * " * string(op.name) * "_{$(_string_subscript(op.subscript))}"
-        else
-            return "0"
-        end
-    end
-end
-function text(op::GeneralKroneckerDelta)::LaTeXString
-    str = string(op.fac) * " * "
-    for subpair in op.subscript
-        if subpair[1] == subpair[2]
-            continue
-        elseif eltype(subpair) <: Symbol
-            str *= string(op.name) * "_{$(_string_subscript(subpair))}"
-        else
-            str = "0"
-            break
-        end
-    end
-    return str
-end
-
-text(num::Number) = string(num)
-
 function text(op::SingleGeneralOperator)::LaTeXString
-    str = string(text(op.fac))
-    str == "0" && return LaTeXString("0")
-    str *= " * "
+    str = string(text(op.factor)) * " * "
     for o in op.ops
         str *= string(text(o))
     end
     return str
 end
-
 function text(op::MultiGeneralOperator)::LaTeXString
     str = string(text(op.ops[1]))
     for i in 2:length(op.ops)

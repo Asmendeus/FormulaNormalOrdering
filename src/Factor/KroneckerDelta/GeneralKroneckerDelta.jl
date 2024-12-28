@@ -1,21 +1,21 @@
 """
-    struct GeneralKroneckerDelta <: AbstractFactor
-        name::AbstractString
+    struct GeneralKroneckerDelta <: AbstractKroneckerDelta
+        name::Union{AbstractString, Symbol}
         subscript::Tuple{Vararg{NTuple{2, <:Union{Symbol, AbstractString, Number}}}}
-        fac::Number
+        factor::Union{Number, GeneralFactor}
     end
 
 # Fields
-- `name::AbstractString`
+- `name::Union{AbstractString, Symbol}`
 - `subscript::Tuple{Vararg{NTuple{2, <:Union{Symbol, AbstractString, Number}}}}`
-- `fac::Number`
+- `factor::Union{Number, GeneralFactor}`
 """
-struct GeneralKroneckerDelta <: AbstractFactor
+struct GeneralKroneckerDelta <: AbstractKroneckerDelta
     name::Union{AbstractString, Symbol}
     subscript::Tuple{Vararg{NTuple{2, <:Union{Symbol, AbstractString, Number}}}}
-    fac::Number
-    function GeneralKroneckerDelta(name::Union{AbstractString, Symbol}, subscript::Tuple{Vararg{NTuple{2, <:Union{Symbol, AbstractString, Number}}}}, fac::Number=1)
-        return new(name, subscript, fac)
+    factor::Union{Number, GeneralFactor}
+    function GeneralKroneckerDelta(name::Union{AbstractString, Symbol}, subscript::Tuple{Vararg{NTuple{2, <:Union{Symbol, AbstractString, Number}}}}, factor::Union{Number, GeneralFactor}=1)
+        return new(name, subscript, factor)
     end
 end
 const GKDelta = GeneralKroneckerDelta
