@@ -15,5 +15,5 @@
 @show Δ = PKDelta(:δ, ((Site(:i), Site(:j)), (Site(:i), Site(:k), Site(:l)), (Spin(:↑), Spin(:↓))), -1)
 @assert Δ == - KDelta(:δ, (Site(:i), Site(:j)), 1) * KDelta(:δ, (Site(:i), Site(:k), Site(:l)), 1) * KDelta(:δ, (Spin(:↑), Spin(:↓)), 1)
 
-@show ΔΔ = Δ * Δ
+@show ΔΔ = - σz_upup * σz_dndn * Δ * Δ * KDelta(:δ, (Site(:m), Site(:n)), 2)
 @show value(ΔΔ)

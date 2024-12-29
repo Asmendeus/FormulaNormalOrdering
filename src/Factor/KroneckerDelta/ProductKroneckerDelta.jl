@@ -19,9 +19,10 @@ struct ProductKroneckerDelta{S} <: AbstractKroneckerDelta{S}
     factor::Union{Number, AbstractGeneralFactor}
 
     function ProductKroneckerDelta(name::Union{AbstractString, Symbol}, subscript::Tuple{Vararg{Tuple{Vararg{AbstractSubscript}}}}, factor::Union{Number, AbstractGeneralFactor})
-        @assert all((allequal(map(y->getSubDim(y), x)) for x in Δ.subscript)) ""
+        all(x->length(x)>1, subscript) || throw(ArgumentError("Every KroneckerDelta in ProductKroneckerDelta should have at least 2 subscript."))
+        all((allequal(map(y->getSubDim(y), x)) for x in subscript)) || throw(SubscriptDimensionError("Mismatched subscript dimensions!"))
         S = Union{(getSubType(x) for x in Iterators.flatten(subscript))...}
-        @assert (S <: SymbolType || S <: CertainType) "The combination of `SymbolType` and `CertainType` is forbidden!"
+        S <: SymbolType || S <: CertainType || throw(SubscriptTypeError("The combination of `SymbolType` and `CertainType` is forbidden!"))
         return new{S}(name, subscript, factor)
     end
 end

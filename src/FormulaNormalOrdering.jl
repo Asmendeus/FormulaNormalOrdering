@@ -63,6 +63,9 @@ include("Operator/GeneralOperator/GeneralMultiOperator.jl")
 
 
 ################# action #################
+export SubscriptDimensionError, SubscriptTypeError
+include("action/Error.jl")
+
 export text
 include("action/text.jl")
 

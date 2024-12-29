@@ -21,7 +21,7 @@ struct KroneckerDelta{N, T, S} <: AbstractKroneckerDelta{S} where {N, T}
     factor::Union{Number, AbstractGeneralFactor}
 
     function KroneckerDelta(name::Union{AbstractString, Symbol}, subscript::NTuple{N, AbstractSubscript{T, S}}, factor::Union{Number, AbstractGeneralFactor}) where {N, T, S}
-        @assert N > 1
+        N > 1 || throw(ArgumentError("KroneckerDelta should have at least 2 subscript."))
         return new{N, T, S}(name, subscript, factor)
     end
 end

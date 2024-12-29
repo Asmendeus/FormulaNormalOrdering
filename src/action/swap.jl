@@ -1,7 +1,8 @@
 function swap(ops::Tuple{AbstractBosonOperator, AbstractBosonOperator})
-    if (typeof(ops[1]) <: BosonAnnihilationOperator
-        && typeof(ops[2]) <: BosonCreationOperator
-        && length(ops[1].subscript) == length(ops[2].subscript))
+    if (isBAOp(ops[1]) && isBCOp(ops[2]) && Set(map(x->getSubDim(x), op[1].subscript)) == Set(map(x->getSubDim(x), op[2].subscript)))
+        op = GeneralSingleOperator([ops[2], ops[1]], 1)
+        return GeneralMultiOperator([δ, op])
+    elseif (isBCOp(ops[1]) && isBAOp(ops[2]) && Set(map(x->getSubDim(x), op[1].subscript)) == Set(map(x->getSubDim(x), op[2].subscript)))
         op = GeneralSingleOperator([ops[2], ops[1]], 1)
         return GeneralMultiOperator([δ, op])
     else

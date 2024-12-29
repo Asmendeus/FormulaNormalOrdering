@@ -42,8 +42,8 @@ function Base.:*(fac1::NumberFactor, fac2::NumberFactor)
 end
 Base.:*(fac1::KroneckerDelta, fac2::NumberFactor) = KroneckerDelta(fac1.name, fac1.subscript, fac1.factor * fac2)
 Base.:*(fac1::NumberFactor, fac2::KroneckerDelta) = KroneckerDelta(fac2.name, fac2.subscript, fac1 * fac2.factor)
-Base.:*(fac1::ProductKroneckerDelta, fac2::NumberFactor) = KroneckerDelta(fac1.name, fac1.subscript, fac1.factor * fac2)
-Base.:*(fac1::NumberFactor, fac2::ProductKroneckerDelta) = KroneckerDelta(fac2.name, fac2.subscript, fac1 * fac2.factor)
+Base.:*(fac1::ProductKroneckerDelta, fac2::NumberFactor) = ProductKroneckerDelta(fac1.name, fac1.subscript, fac1.factor * fac2)
+Base.:*(fac1::NumberFactor, fac2::ProductKroneckerDelta) = ProductKroneckerDelta(fac2.name, fac2.subscript, fac1 * fac2.factor)
 
 function Base.:*(op1::KroneckerDelta, op2::KroneckerDelta)
     return ProductKroneckerDelta(op1.name, (op1.subscript, op2.subscript), op1.factor * op2.factor)
