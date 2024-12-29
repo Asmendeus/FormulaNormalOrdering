@@ -25,6 +25,7 @@ function text(op::Union{BosonCreationOperator, FermionCreationOperator})::LaTeXS
     return string(op.name) * "^\\dag" * "_{$(_string_subscript(op.subscript))}"
 end
 function text(op::GeneralSingleOperator)::LaTeXString
+    isempty(op.ops) && return ""
     str = string(text(op.factor)) * " * "
     for o in op.ops
         str *= string(text(o))

@@ -40,7 +40,7 @@ function value(fac::ProductKroneckerDelta{S}; isstrict::Bool=false) where S
             end
         end
 
-        if isGKDelta(new_fac)
+        if isPKDelta(new_fac)
             return isstrict ? ProductKroneckerDelta(new_fac.name, new_fac.subscript, value(new_fac.factor)) : new_fac
         elseif isKDelta(new_fac)
             return value(new_fac; isstrict=isstrict)

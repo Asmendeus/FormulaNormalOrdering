@@ -72,7 +72,7 @@ include("action/text.jl")
 include("action/base.jl")
 
 export isSubscript, isGSubscript
-export isFactor, isNumber, isNFactor, isKDelta, isGKDelta
+export isFactor, isNumber, isNFactor, isKDelta, isPKDelta
 export isOperator, isBoson, isBAOp, isBCOp, isFermion, isFAOp, isFCOp, isGeneral, isGSOp, isGMOp
 include("action/tools.jl")
 

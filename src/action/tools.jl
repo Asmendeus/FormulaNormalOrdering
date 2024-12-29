@@ -8,7 +8,7 @@ isFactor(fac) = typeof(fac) <: Union{Number, AbstractFactor}
 isNumber(fac::Union{Number, AbstractFactor}) = typeof(fac) <: Number
 isNFactor(fac::Union{Number, AbstractFactor}) = typeof(fac) <: NumberFactor
 isKDelta(fac::Union{Number, AbstractFactor}) = typeof(fac) <: KroneckerDelta
-isGKDelta(fac::Union{Number, AbstractFactor}) = typeof(fac) <: ProductKroneckerDelta
+isPKDelta(fac::Union{Number, AbstractFactor}) = typeof(fac) <: ProductKroneckerDelta
 
 
 # =============== Operator ===============

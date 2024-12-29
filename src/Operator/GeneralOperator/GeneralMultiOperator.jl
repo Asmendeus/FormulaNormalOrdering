@@ -9,7 +9,7 @@
 mutable struct GeneralMultiOperator <: AbstractGeneralOperator
     ops::Vector{<:GeneralSingleOperator}
     function GeneralMultiOperator(ops::Vector{<:GeneralSingleOperator})
-        return new(ops)
+        return new(sort(ops, by=x->length(x.ops)))
     end
 end
 const GMOp = GeneralMultiOperator

@@ -2,6 +2,48 @@ function Base.show(io::IO, op::Union{AbstractSubscript, AbstractFactor, Abstract
     print(io, text(op))
 end
 
+############## isequal ###############
+# Factor
+function Base.:(==)(fac1::NumberFactor, fac2::NumberFactor)
+    return (fac1.factor == fac2.factor) && (fac1.value == fac2.value)
+end
+function Base.isequal(fac1::NumberFactor, fac2::NumberFactor)
+    return (fac1.factor == fac2.factor) && (fac1.value == fac2.value)
+end
+function Base.:(==)(fac1::KroneckerDelta, fac2::KroneckerDelta)
+    return (fac1.factor == fac2.factor) && (Set(fac1.subscript) == fac2.subscript)
+end
+function Base.isequal(fac1::KroneckerDelta, fac2::KroneckerDelta)
+    return (fac1.factor == fac2.factor) && (Set(fac1.subscript) == fac2.subscript)
+end
+function Base.:(==)(fac1::ProductKroneckerDelta, fac2::ProductKroneckerDelta)
+    return (fac1.factor == fac2.factor) && (Set(map(x->Set(x), fac1.subscript)) == Set(map(x->Set(x), fac2.subscript)))
+end
+function Base.isequal(fac1::ProductKroneckerDelta, fac2::ProductKroneckerDelta)
+    return (fac1.factor == fac2.factor) && (Set(map(x->Set(x), fac1.subscript)) == Set(map(x->Set(x), fac2.subscript)))
+end
+
+# Operator
+function Base.:(==)(op1::T, op2::T) where T <: Union{BosonAnnihilationOperator, BosonCreationOperator, FermionAnnihilationOperator, FermionCreationOperator}
+    return Set(op1.subscript) == Set(op2.subscript)
+end
+function Base.isequal(op1::T, op2::T) where T <: Union{BosonAnnihilationOperator, BosonCreationOperator, FermionAnnihilationOperator, FermionCreationOperator}
+    return Set(op1.subscript) == Set(op2.subscript)
+end
+function Base.:(==)(op1::GeneralSingleOperator, op2::GeneralSingleOperator)
+    return (op1.factor == op2.factor) && (length(op1.ops) == length(op2.ops)) && all(i->op1.ops[i]==op2.ops[i], eachindex(op1.ops))
+end
+function Base.isequal(op1::GeneralSingleOperator, op2::GeneralSingleOperator)
+    return (op1.factor == op2.factor) && (length(op1.ops) == length(op2.ops)) && all(i->op1.ops[i]==op2.ops[i], eachindex(op1.ops))
+end
+function Base.:(==)(op1::GeneralMultiOperator, op2::GeneralMultiOperator)
+    return (length(op1.ops) == length(op2.ops)) && all(i->op1.ops[i]==op2.ops[i], eachindex(op1.ops))
+end
+function Base.isequal(op1::GeneralMultiOperator, op2::GeneralMultiOperator)
+    return (length(op1.ops) == length(op2.ops)) && all(i->op1.ops[i]==op2.ops[i], eachindex(op1.ops))
+end
+
+
 ################ math ################
 # ============== addition ==============
 function Base.:+(op1::GeneralSingleOperator, op2::GeneralSingleOperator)
