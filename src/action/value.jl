@@ -2,7 +2,7 @@
 value(fac::Number) = fac
 value(fac::NumberFactor; isstrict::Bool=true) = isstrict ? fac.value * fac.factor : fac
 
-function value(fac::KroneckerDelta{N, T, <:SymbolType}; isstrict::Bool=false) where {N, T}
+function value(fac::KroneckerDelta{N, T, <:SymbolType}; isstrict::Bool=true) where {N, T}
     if allequal(fac.subscript)
         return isstrict ? value(fac.factor) : fac.factor
     else
@@ -12,7 +12,7 @@ end
 function value(fac::KroneckerDelta{N, T, <:CertainType}) where {N, T}
     return allequal(fac.subscript) ? value(fac.factor) : 0
 end
-function value(fac::ProductKroneckerDelta{S}; isstrict::Bool=false) where S
+function value(fac::ProductKroneckerDelta{S}; isstrict::Bool=true) where S
     if all(x->allequal(x), fac.subscript)
         return isstrict ? value(fac.factor) : fac.factor
     else
@@ -55,4 +55,11 @@ function value(fac::ProductKroneckerDelta{S}; isstrict::Bool=false) where S
 end
 function value(fac::ProductKroneckerDelta{<:CertainType})
     return all(x->allequal(x), fac.subscript) ? value(fac.factor) : 0
+end
+
+function value(op::GeneralSingleOperator)
+    return GeneralSingleOperator(op.ops, value(op.factor))
+end
+function value(op::GeneralMultiOperator)
+    return GeneralMultiOperator(map(x->value(x), op.ops))
 end

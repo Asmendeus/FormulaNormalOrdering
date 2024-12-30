@@ -4,12 +4,12 @@ text(sub::GeneralSubscript) = string(sub.subscript)
 
 # =============== Factor ===============
 text(fac::Number)::LaTeXString = string(fac)
-text(fac::NumberFactor)::LaTeXString = string(fac.factor) * " * " * string(fac.name)
+text(fac::NumberFactor)::LaTeXString = string(fac.factor) * "*" * string(fac.name)
 function text(fac::KroneckerDelta{N, T, S})::LaTeXString where {N, T, S}
-    return string(text(fac.factor)) * " * " * string(fac.name) * "_{$(_string_subscript(fac.subscript))}"
+    return string(text(fac.factor)) * "*" * string(fac.name) * "_{$(_string_subscript(fac.subscript))}"
 end
 function text(fac::ProductKroneckerDelta{T})::LaTeXString where T
-    str = string(text(fac.factor)) * " * "
+    str = string(text(fac.factor)) * "*"
     for subpair in fac.subscript
         str *= string(fac.name) * "_{$(_string_subscript(subpair))}"
     end
@@ -25,8 +25,8 @@ function text(op::Union{BosonCreationOperator, FermionCreationOperator})::LaTeXS
     return string(op.name) * "^\\dag" * "_{$(_string_subscript(op.subscript))}"
 end
 function text(op::GeneralSingleOperator)::LaTeXString
-    isempty(op.ops) && return ""
-    str = string(text(op.factor)) * " * "
+    isempty(op.ops) && return text(op.factor)
+    str = string(text(op.factor)) * " × "
     for o in op.ops
         str *= string(text(o))
     end
@@ -35,7 +35,9 @@ end
 function text(op::GeneralMultiOperator)::LaTeXString
     str = string(text(op.ops[1]))
     for i in 2:length(op.ops)
-        if text(op.ops[i])[1] != '-'
+        if isempty(text(op.ops[i]))
+            continue
+        elseif text(op.ops[i])[1] != '-'
             str *= " + " * string(text(op.ops[i]))
         else
             str *= " - " * string(text(op.ops[i]))[2:end]

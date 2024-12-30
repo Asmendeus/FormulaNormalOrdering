@@ -1,29 +1,29 @@
 # =============== Subscript ===============
-isSubscript(sub) = typeof(sub) <: AbstractSubscript
-isGSubscript(sub::AbstractSubscript) = typeof(sub) <: GeneralSubscript
+isSubscript(sub) = isa(sub, AbstractSubscript)
+isGSubscript(sub::AbstractSubscript) = isa(sub, GeneralSubscript)
 
 
 # =============== Factor ===============
-isFactor(fac) = typeof(fac) <: Union{Number, AbstractFactor}
-isNumber(fac::Union{Number, AbstractFactor}) = typeof(fac) <: Number
-isNFactor(fac::Union{Number, AbstractFactor}) = typeof(fac) <: NumberFactor
-isKDelta(fac::Union{Number, AbstractFactor}) = typeof(fac) <: KroneckerDelta
-isPKDelta(fac::Union{Number, AbstractFactor}) = typeof(fac) <: ProductKroneckerDelta
+isFactor(fac) = isa(fac, Union{Number, AbstractFactor})
+isNumber(fac::Union{Number, AbstractFactor}) = isa(fac, Number)
+isNFactor(fac::Union{Number, AbstractFactor}) = isa(fac, NumberFactor)
+isKDelta(fac::Union{Number, AbstractFactor}) = isa(fac, KroneckerDelta)
+isPKDelta(fac::Union{Number, AbstractFactor}) = isa(fac, ProductKroneckerDelta)
 
 
 # =============== Operator ===============
-isOperator(op) = typeof(op) <: AbstractOperator
+isOperator(op) = isa(op, AbstractOperator)
 
-isBoson(op::AbstractOperator) = typeof(op) <: AbstractBosonOperator
-isBAOp(op::AbstractOperator) = typeof(op) <: BosonAnnihilationOperator
-isBCOp(op::AbstractOperator) = typeof(op) <: BosonCreationOperator
+isBoson(op::AbstractOperator) = isa(op, AbstractBosonOperator)
+isBAOp(op::AbstractOperator) = isa(op, BosonAnnihilationOperator)
+isBCOp(op::AbstractOperator) = isa(op, BosonCreationOperator)
 
-isFermion(op::AbstractOperator) = typeof(op) <: AbstractFermionOperator
-isFAOp(op::AbstractOperator) = typeof(op) <: FermionAnnihilationOperator
-isFCOp(op::AbstractOperator) = typeof(op) <: FermionCreationOperator
+isFermion(op::AbstractOperator) = isa(op, AbstractFermionOperator)
+isFAOp(op::AbstractOperator) = isa(op, FermionAnnihilationOperator)
+isFCOp(op::AbstractOperator) = isa(op, FermionCreationOperator)
 
-isGeneral(op::AbstractOperator) = typeof(op) <: AbstractGeneralOperator
-isGSOp(op::AbstractOperator) = typeof(op) <: GeneralSingleOperator
-isGMOp(op::AbstractOperator) = typeof(op) <: GeneralMultiOperator
+isGeneral(op::AbstractOperator) = isa(op, AbstractGeneralOperator)
+isGSOp(op::AbstractOperator) = isa(op, GeneralSingleOperator)
+isGMOp(op::AbstractOperator) = isa(op, GeneralMultiOperator)
 
 

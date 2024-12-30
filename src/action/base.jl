@@ -11,10 +11,10 @@ function Base.isequal(fac1::NumberFactor, fac2::NumberFactor)
     return (fac1.factor == fac2.factor) && (fac1.value == fac2.value)
 end
 function Base.:(==)(fac1::KroneckerDelta, fac2::KroneckerDelta)
-    return (fac1.factor == fac2.factor) && (Set(fac1.subscript) == fac2.subscript)
+    return (fac1.factor == fac2.factor) && (Set(fac1.subscript) == Set(fac2.subscript))
 end
 function Base.isequal(fac1::KroneckerDelta, fac2::KroneckerDelta)
-    return (fac1.factor == fac2.factor) && (Set(fac1.subscript) == fac2.subscript)
+    return (fac1.factor == fac2.factor) && (Set(fac1.subscript) == Set(fac2.subscript))
 end
 function Base.:(==)(fac1::ProductKroneckerDelta, fac2::ProductKroneckerDelta)
     return (fac1.factor == fac2.factor) && (Set(map(x->Set(x), fac1.subscript)) == Set(map(x->Set(x), fac2.subscript)))
@@ -77,7 +77,7 @@ Base.:-(op1::Union{GeneralSingleOperator, GeneralMultiOperator}, op2::Union{Gene
 Base.:*(fac1::AbstractFactor, fac2::Number) = fac2 * fac1
 Base.:*(fac1::Number, fac2::NumberFactor) = NumberFactor(fac2.name, fac2.value, fac1 * fac2.factor)
 Base.:*(fac1::Number, fac2::KroneckerDelta) = KroneckerDelta(fac2.name, fac2.subscript, fac1 * fac2.factor)
-Base.:*(fac1::Number, fac2::ProductKroneckerDelta) = ProductKroneckerDelta(fac2.name, fac2.subscript, fac1 * op.factor)
+Base.:*(fac1::Number, fac2::ProductKroneckerDelta) = ProductKroneckerDelta(fac2.name, fac2.subscript, fac1 * fac2.factor)
 
 function Base.:*(fac1::NumberFactor, fac2::NumberFactor)
     return NumberFactor(string(fac1.name)* " " * string(fac2.name), fac1.value * fac2.value, fac1.factor * fac2.factor)

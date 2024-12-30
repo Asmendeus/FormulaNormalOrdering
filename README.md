@@ -4,7 +4,7 @@ This package provides automatic ordering of boson and fermion operators in formu
 
 If you find any bugs or have any good suggestions, please submit an issue.
 
-**WARNING**: 
+**WARNING**:
 
 The current version `v0.1` is **just a demo**. The next version `v0.2` is on the way, with a planned release in **January** or **February 2025**, which probably **not be compatible** with `v0.1`.
 
@@ -75,11 +75,17 @@ The criteria for determining whether two creation or annihilation operators are 
 
 If you accomplish the above or any other necessary implementation, please feel free to contact me (3120231483@bit.edu.cn) or submit an issue.
 
+## Tips
+
+The function `sort` establishes a hash table by processing the order of the operators passed in(it will be processed by the function `unique` first), so the same operators will always be put together after sorting.
+
+If you want a freer sort, make sure that there are no duplicate operators in the `GeneralOperator` you enter. This can be done by **changing the name of the duplicate operator**.
+
 ## Update Plan
 
 In my plan, the current version `v0.1` is **just a demo**.
 
-The next version `v0.2` is on the way, with a planned release in **January** or **February 2025**, which probably **not be compatible** with `v0.1`. 
+The next version `v0.2` is on the way, with a planned release in **January** or **February 2025**, which probably **not be compatible** with `v0.1`.
 
 In fact, I've already designed the architecture for `v0.2`, which is highly readable, well-structured, and includes several optimizations compared to `v0.1`. These improvements will facilitate its future development and scalability. However, the biggest challenge is that the new version may be difficult to integrate with the current one, as the original design didn't fully account for future expansion. If you encounter any compatibility issues down the line, I sincerely apologize for the inconvenience.
 

@@ -10,7 +10,6 @@
 Comparisons can only be made when the two subscripts are in the same parameter dimension `T`.
 If `S <: SymbolType`, the degree of freedom of the parameter dimension `T` is symbolically represented;
 otherwise `S <: CertainType`, the value of the subscript has a clear meaning.
-See the README file for more details.
 """
 struct GeneralSubscript{T, S} <: AbstractSubscript{T, S}
     subscript::S

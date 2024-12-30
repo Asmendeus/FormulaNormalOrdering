@@ -13,3 +13,5 @@ mutable struct GeneralSingleOperator <: AbstractGeneralOperator
     factor::Union{Number, AbstractFactor}
 end
 const GSOp = GeneralSingleOperator
+
+GeneralSingleOperator(op::GeneralSingleOperator) = op
