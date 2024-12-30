@@ -7,7 +7,7 @@ using LaTeXStrings
 export AbstractSubscript, getSubType, getSubDim
 include("Subscript/AbstractSubscript.jl")
 
-export Subscript, Site, Spin, Orbital, Layer
+export Subscript, getSubLabel, Site, Spin, Orbital, Layer
 include("Subscript/Subscript.jl")
 
 ################# Factor #################
@@ -16,5 +16,7 @@ include("Subscript/Subscript.jl")
 ################# Operator #################
 
 ################# action #################
+export SubscriptTypeError, SubscriptDimensionError
+include("action/Error.jl")
 
 end # module FormulaNormalOrdering
