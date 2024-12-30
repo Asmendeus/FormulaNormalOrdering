@@ -7,8 +7,8 @@ ca = Subscript{:symbol, :cell}(:a)
 cb = Subscript(:symbol, :cell, :b)
 
 @testset "Subscript property" begin
-    @test getSubType(si) == :symbol
-    @test getSubType(ca) == :symbol
+    @test getType(si) == :symbol
+    @test getType(ca) == :symbol
 
     @test getSubDim(sj) == :site
     @test getSubDim(cb) == :cell

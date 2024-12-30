@@ -1,7 +1,7 @@
-struct SubscriptTypeError <: Exception
+struct FormulaTypeError <: Exception
     message::String
 end
-Base.show(io::IO, e::SubscriptTypeError) = print(io, "SubscriptTypeError: ", e.message)
+Base.show(io::IO, e::FormulaTypeError) = print(io, "FormulaTypeError: ", e.message)
 
 struct SubscriptDimensionError <: Exception
     message::String

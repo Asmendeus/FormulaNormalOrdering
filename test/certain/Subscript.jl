@@ -7,8 +7,8 @@ c1 = Subscript{:certain, :cell}(1)
 c2 = Subscript(:certain, :cell, 2)
 
 @testset "Subscript property" begin
-    @test getSubType(s1) == :certain
-    @test getSubType(c1) == :certain
+    @test getType(s1) == :certain
+    @test getType(c1) == :certain
 
     @test getSubDim(s2) == :site
     @test getSubDim(c2) == :cell

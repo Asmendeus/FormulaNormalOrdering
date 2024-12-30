@@ -13,11 +13,11 @@ struct Subscript{T, S} <: AbstractSubscript{T, S}
     label::Union{Symbol, AbstractString, Number}
 
     function Subscript{T, S}(label::Union{Symbol, AbstractString, Number}) where {T, S}
-        T in (:symbol, :certain) || throw(SubscriptTypeError("The type `T` of Subscript{T, S} should be in (:Symbol, :Certain)"))
+        T in (:symbol, :certain) || throw(FormulaTypeError("The type `T` of Subscript{T, S} should be in (:Symbol, :Certain)"))
         return new{T, S}(label)
     end
     function Subscript(T::Symbol, S::Symbol, label::Union{Symbol, AbstractString, Number})
-        T in (:symbol, :certain) || throw(SubscriptTypeError("The type `T` of Subscript{T, S} should be in (:Symbol, :Certain)"))
+        T in (:symbol, :certain) || throw(FormulaTypeError("The type `T` of Subscript{T, S} should be in (:Symbol, :Certain)"))
         return new{T, S}(label)
     end
 end
