@@ -3,40 +3,35 @@
 Subscript
 
 ```julia
-abstract type AbstractSubscript{T, S}
-
-getSubType(::AbstractSubscript{T, S}) where {T, S} = T
-getSubDim(::AbstractSubscript{T, S}) where {T, S} = S
-
-struct Subscript{T, S} <: AbstractSubscript{T, S}
-
+abstract type AbstractSubscript{T, S} end
+struct Subscript{T, S} <: AbstractSubscript{T,S}
 
 # T == :Symbol || T == :Certain
+# S = :Site, :Spin, :Orbital, ...
 ```
 
 Factor
 
 ```julia
-abstract type AbstractFactor
-abstract type AbstractLinearFactor <: AbstractFactor
-abstract type AbstractMultiplyFactor <: AbstractLinearFactor
-abstract type AbstractKronecker{T, S...} <: AbstractMultiplyFactor
+abstract type AbstractNamedFactor{T} end
+abstract type AbstractLinearFactor{T} <: AbstractNamedFactor{T} end
+abstract type AbstractMultiplyFactor{T} <: AbstractLinearFactor{T} end
 
-struct NumberFactor <: AbstractMultiplyFactor
-struct OperatorFactor{S...} <: AbstractMultiplyFactor
-struct KroneckerDelta{T, S...} <: AbstractKronecker{T, S...}
-struct LinearFactor <: AbstractLinearFactor
+struct NumberFactor{T} <: AbstractMultiplyFactor{T}
+struct OperatorFactor{T, S...} <: AbstractMultiplyFactor{T}
+struct KroneckerDelta{T, S...} <: AbstractMultiplyFactor{T}
+struct LinearFactor{T} <: AbstractLinearFactor{T}
 ```
 
 Operator
 
 ```julia
-abstract type AbstractOperator{T}
+abstract type AbstractOperator{T} end
 
 
-abstract type AbstractBasicOperator{T, S...} <: AbstractOperator{T}
+abstract type AbstractBasicOperator{T, S...} <: AbstractOperator{T} end
 
-abstract type AbstractAnyonOperator{θ, T, S...} <: AbstractBasicOperator{T, S...}
+abstract type AbstractAnyonOperator{θ, T, S...} <: AbstractBasicOperator{T, S...} end
 getAmplitude(::AbstractAnyonOperator{θ, T, S...}) = θ
 getSubType(::AbstractAnyonOperator{θ, T, S...}) = T
 getSubDims(::AbstractAnyonOperator{θ, T, S...}) = (S...,)
@@ -49,9 +44,9 @@ const AbstractFermionOperator = AbstractAnyonOperator{π}
 const FermionOperator = AnyonOperator{π}
 
 
-abstract type AbstractLinearOperator <: AbstractOperator
+abstract type AbstractLinearOperator <: AbstractOperator end
 struct LinearOperator <: AbstractLinearOperator
 
-abstract type AbstractMultiplyOperator <: AbstractLinearOpeartor
+abstract type AbstractMultiplyOperator <: AbstractLinearOpeartor end
 struct MultiplyOperator <: AbstractMultiplyOperator
 ```

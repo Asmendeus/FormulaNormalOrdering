@@ -3,15 +3,15 @@ module FormulaNormalOrdering
 using DataStructures
 using LaTeXStrings
 
-################# SubscriptType #################
-# const NameType = Union{Symbol, AbstractString}
-# const FactorType = Union{Number, AbstractFactor}
-
-# export NameType, FactorType
-
 ################# Subscript #################
+export AbstractSubscript, getSubType, getSubDim
+include("Subscript/AbstractSubscript.jl")
+
+export Subscript, Site, Spin, Orbital, Layer
+include("Subscript/Subscript.jl")
 
 ################# Factor #################
+
 
 ################# Operator #################
 
