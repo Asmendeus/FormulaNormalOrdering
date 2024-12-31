@@ -6,7 +6,7 @@ Subscript
 abstract type AbstractSubscript{S} end
 struct Subscript{S} <: AbstractSubscript{S}
 
-# S = :Site, :Spin, :Orbital, ...
+# S = :site, :spin, :orbital, ...
 ```
 
 Factor

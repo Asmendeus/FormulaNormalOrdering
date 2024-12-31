@@ -24,13 +24,6 @@ getSubLabel(sub::Subscript) = sub.label
 
 # Preset subscript dimension
 const Site = Subscript{:site}
-Site(T::Symbol, label::Union{Symbol, AbstractString, Number}) = Site(label)
-
 const Spin = Subscript{:spin}
-Spin(T::Symbol, label::Union{Symbol, AbstractString, Number}) = Spin(label)
-
 const Orbital = Subscript{:orbital}
-Orbital(T::Symbol, label::Union{Symbol, AbstractString, Number}) = Orbital(label)
-
 const Layer = Subscript{:layer}
-Layer(T::Symbol, label::Union{Symbol, AbstractString, Number}) = Layer(label)

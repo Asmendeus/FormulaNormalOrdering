@@ -4,22 +4,28 @@ using DataStructures
 using LaTeXStrings
 
 ################# Subscript #################
-export AbstractSubscript, getType, getSubDim
+export AbstractSubscript, getSubType
 include("Subscript/AbstractSubscript.jl")
 
 export Subscript, getSubLabel, Site, Spin, Orbital, Layer
 include("Subscript/Subscript.jl")
 
+
 ################# Factor #################
+export AbstractNamedFactor, getFactorType
+include("NamedFactor/AbstractNamedFactor.jl")
+
+export AbstractMultiplyFactor
+include("NamedFactor/MultiplyFactor/AbstractMultiplyFactor.jl")
+
+export AbstractLinearFactor
+include("NamedFactor/LinearFactor/AbstractLinearFactor.jl")
 
 
 ################# Operator #################
 
 
 ################# action #################
-export FormulaTypeError, SubscriptDimensionError
-include("action/Error.jl")
-
 export text
 include("action/text.jl")
 
