@@ -102,6 +102,8 @@ function Base.:*(op1::ProductKroneckerDelta, op2::ProductKroneckerDelta)
 end
 
 # GeneralSingleOperator
+Base.:*(op::Union{AbstractBosonOperator, AbstractFermionOperator}, fac::Union{Number, AbstractFactor}) = fac * op
+Base.:*(fac::Union{Number, AbstractFactor}, op::Union{AbstractBosonOperator, AbstractFermionOperator}) = GeneralSingleOperator([op,], fac)
 Base.:*(op::GeneralSingleOperator, fac::Union{Number, AbstractFactor}) = GeneralSingleOperator(op.ops, op.factor * fac)
 Base.:*(fac::Union{Number, AbstractFactor}, op::GeneralSingleOperator) = GeneralSingleOperator(op.ops, fac * op.factor)
 Base.:*(op1::Union{AbstractBosonOperator, AbstractFermionOperator}, op2::Union{AbstractBosonOperator, AbstractFermionOperator}) = GeneralSingleOperator([op1, op2], 1)
