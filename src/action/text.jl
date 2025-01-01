@@ -16,13 +16,13 @@ text(fac::KroneckerDelta)::LaTeXString = text(fac.factor) * "_{$(_string_subscri
 text(fac::NumberFactor)::LaTeXString = text(fac.factor) * string(fac.name)
 text(fac::OperatorFactor)::LaTeXString = text(fac.factor) * string(fac.name) * "_{$(_string_subscripts(fac.subscripts))}"
 function text(fac::LinearFactor)
-    str = text(fac.factor) * "(" * text(fac.summation[1])
+    str = text(fac.factor) * "(" * (isa(fac.summation[1], Number) ? string(fac.summation[1]) : text(fac.summation[1]))
     for i in 2:length(fac.summation)
-        _temptext = fac.summation[i]
+        _temptext = isa(fac.summation[i], Number) ? string(fac.summation[i]) : text(fac.summation[i])
         if _temptext[1] == '-'
-            str *= " - " * text(_temptext)[2:end]
+            str *= " - " * _temptext[2:end]
         else
-            str *= " + " * text(_temptext)
+            str *= " + " * _temptext
         end
     end
     str *= ")"
