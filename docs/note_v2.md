@@ -19,7 +19,7 @@ abstract type AbstractMultiplyFactor{T} <: AbstractNamedFactor{T} end
 
 struct NumberFactor{T} <: AbstractMultiplyFactor{T}
 struct OperatorFactor{T, S...} <: AbstractMultiplyFactor{T}
-struct KroneckerDelta{T, S...} <: AbstractMultiplyFactor{T}
+struct KroneckerDelta{T, S} <: AbstractMultiplyFactor{T}
 
 struct LinearFactor{T} <: AbstractLinearFactor{T}
 ```
