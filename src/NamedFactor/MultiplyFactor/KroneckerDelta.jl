@@ -33,10 +33,10 @@ struct KroneckerDelta{T, S} <: AbstractMultiplyFactor{T} where S
         length(subscripts) > 1 || throw(FactorError("KroneckerDelta needs at least two subscripts"))
         return new{T, S}(name, subscripts, factor)
     end
-    function KroneckerDelta{T}(name::Union{Symbol, AbstractString}, subscripts::Tuple{Vararg{AbstractSubscript{S}}}, factor::Number) where {T, S}
+    function KroneckerDelta{T}(name::Union{Symbol, AbstractString}, subscripts::Tuple{Vararg{AbstractSubscript{S}}}, factor::Number=1) where {T, S}
         T in (:symbol, :certain) || throw(FactorTypeError("Unacceptable factor type $T. Factor type should be :symbol or :certain"))
         length(subscripts) > 1 || throw(FactorError("KroneckerDelta needs at least two subscripts"))
-        return new{T, S}(name, subscripts, factor)
+        return factor == 0 ? 0 : new{T, S}(name, subscripts, factor)
     end
 end
 const KDelta = KroneckerDelta

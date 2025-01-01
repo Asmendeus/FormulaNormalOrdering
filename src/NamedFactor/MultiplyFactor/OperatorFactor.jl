@@ -27,10 +27,10 @@ struct OperatorFactor{T} <: AbstractMultiplyFactor{T}
         T == :certain && !all(sub->(sub in keys(subscripts)), subscripts) && throw(FactorError("No value match the subscripts $(subscripts)!"))
         return new{T}(name, subscripts, values, factor)
     end
-    function OperatorFactor{T}(name::Union{Symbol, AbstractString}, subscripts::Tuple{Vararg{AbstractSubscript}}, values::Dict{<:Tuple{Vararg{AbstractSubscript}}, <:Number}, factor::Number) where T
+    function OperatorFactor{T}(name::Union{Symbol, AbstractString}, subscripts::Tuple{Vararg{AbstractSubscript}}, values::Dict{<:Tuple{Vararg{AbstractSubscript}}, <:Number}, factor::Number=1) where T
         T in (:symbol, :certain) || throw(FactorTypeError("Unacceptable factor type $T. Factor type should be :symbol or :certain"))
         T == :certain && !all(sub->(sub in keys(subscripts)), subscripts) && throw(FactorError("No value match the subscripts $(subscripts)!"))
-        return new{T}(name, subscripts, values, factor)
+        return factor == 0 ? 0 : new{T}(name, subscripts, values, factor)
     end
 end
 const OFactor = OperatorFactor

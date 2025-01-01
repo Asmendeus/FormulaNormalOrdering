@@ -22,9 +22,9 @@ struct NumberFactor{T} <: AbstractMultiplyFactor{T}
         T in (:symbol, :certain) || throw(FactorTypeError("Unacceptable factor type $T. Factor type should be :symbol or :certain"))
         return new{T}(name, value, factor)
     end
-    function NumberFactor{T}(name::Union{Symbol, AbstractString}, value::Number, factor::Number) where T
+    function NumberFactor{T}(name::Union{Symbol, AbstractString}, value::Number, factor::Number=1) where T
         T in (:symbol, :certain) || throw(FactorTypeError("Unacceptable factor type $T. Factor type should be :symbol or :certain"))
-        return new{T}(name, value, factor)
+        return factor == 0 ? 0 : new{T}(name, value, factor)
     end
 end
 const NFactor = NumberFactor
