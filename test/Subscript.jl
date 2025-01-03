@@ -11,4 +11,6 @@ cb = Subscript(:cell, :b)
 
     @test getSubLabel(sk) == :k
     @test getSubLabel(ca) == :a
+
+    @test si == Site(:i)
 end

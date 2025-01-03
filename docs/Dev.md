@@ -12,16 +12,16 @@ struct Subscript{S} <: AbstractSubscript{S}
 Factor
 
 ```julia
-abstract type AbstractNamedFactor{T} end
+abstract type AbstractNamedFactor end
 
-abstract type AbstractLinearFactor{T} <: AbstractNamedFactor{T} end
-abstract type AbstractMultiplyFactor{T} <: AbstractNamedFactor{T} end
+abstract type AbstractLinearFactor <: AbstractNamedFactor end
+abstract type AbstractMultiplyFactor <: AbstractNamedFactor end
 
-struct NumberFactor{T} <: AbstractMultiplyFactor{T}
-struct OperatorFactor{T, S...} <: AbstractMultiplyFactor{T}
-struct KroneckerDelta{T, S} <: AbstractMultiplyFactor{T}
+struct NumberFactor <: AbstractMultiplyFactor
+struct OperatorFactor <: AbstractMultiplyFactor
+struct KroneckerDelta{S} <: AbstractMultiplyFactor
 
-struct LinearFactor{T} <: AbstractLinearFactor{T}
+struct LinearFactor <: AbstractLinearFactor
 ```
 
 Operator
@@ -30,9 +30,9 @@ Operator
 abstract type AbstractOperator end
 
 
-abstract type AbstractBasicOperator{K, S...} <: AbstractOperator end
+abstract type AbstractBasicOperator <: AbstractOperator end
 
-abstract type AbstractAnyonOperator{θ, K, S...} <: AbstractBasicOperator{K, S...} end
+abstract type AbstractAnyonOperator{θ, K, S...} <: AbstractBasicOperator end
 getAmplitude(::AbstractAnyonOperator{θ, K, S...}) = θ
 getOperatorType(::AbstractAnyonOperator{θ, K, S...}) = K # in (:a, :annihilation, :c, :creation)
 getSubDims(::AbstractAnyonOperator{θ, K, S...}) = (S...,)
@@ -43,6 +43,8 @@ const BosonOperator{K, S...} = AnyonOperator{0, K, S...}
 
 const AbstractFermionOperator{K, S...} = AbstractAnyonOperator{π, K, S...}
 const FermionOperator{K, S...} = AnyonOperator{π, K, S...}
+
+struct IdentityOperator <: AbstractBasicOperator
 
 
 abstract type AbstractLinearOperator <: AbstractOperator end

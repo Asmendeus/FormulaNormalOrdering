@@ -1,8 +1,8 @@
 """
-    struct KroneckerDelta{T, S} <: AbstractMultiplyFactor{T} where S
+    struct KroneckerDelta{S} <: AbstractMultiplyFactor where S
         name::Union{Symbol, AbstractString}
         subscripts::Tuple{Vararg{AbstractSubscript{S}}}
-        factor::Union{Number, AbstractNamedFactor{T}}
+        factor::Union{Number, AbstractNamedFactor}
     end
 
 # Fields
@@ -15,33 +15,26 @@
 It is separated out because it plays an important role in operator swapping.
 
 # Value
-When the factor type `T` is :certain,
-    value(δ::KroneckerDelta) = value(δ.factor)      if allequal(δ.subscripts) == true
-                             = 0                    if allequal(δ.subscripts) == false
-
-# Recommended name
-If you only view the output text, a recommended name is ":δ",
-If you want to export to LaTeX text, a recommended name is "\\delta".
+value(δ::KroneckerDelta) = value(δ.factor)      if allequal(δ.subscripts) == true
+                         = 0                    if allequal(δ.subscripts) == false
 """
-struct KroneckerDelta{T, S} <: AbstractMultiplyFactor{T} where S
+struct KroneckerDelta{S} <: AbstractMultiplyFactor where S
     name::Union{Symbol, AbstractString}
     subscripts::Tuple{Vararg{AbstractSubscript{S}}}
-    factor::Union{Number, AbstractNamedFactor{T}}
+    factor::Union{Number, AbstractNamedFactor}
 
-    function KroneckerDelta(name::Union{Symbol, AbstractString}, subscripts::Tuple{Vararg{AbstractSubscript{S}}}, factor::AbstractNamedFactor{T}) where {T, S}
-        T in (:symbol, :certain) || throw(FactorTypeError("Unacceptable factor type $T. Factor type should be :symbol or :certain"))
+    function KroneckerDelta{S}(name::Union{Symbol, AbstractString}, subscripts::Tuple{Vararg{AbstractSubscript{S}}}, factor::Union{Number, AbstractNamedFactor}=1) where S
         length(subscripts) > 1 || throw(FactorError("KroneckerDelta needs at least two subscripts"))
-        return new{T, S}(name, subscripts, factor)
+        return factor == 0 ? 0 : new{S}(name, subscripts, factor)
     end
-    function KroneckerDelta{T}(name::Union{Symbol, AbstractString}, subscripts::Tuple{Vararg{AbstractSubscript{S}}}, factor::Number=1) where {T, S}
-        T in (:symbol, :certain) || throw(FactorTypeError("Unacceptable factor type $T. Factor type should be :symbol or :certain"))
+    function KroneckerDelta(name::Union{Symbol, AbstractString}, subscripts::Tuple{Vararg{AbstractSubscript{S}}}, factor::Union{Number, AbstractNamedFactor}=1) where S
         length(subscripts) > 1 || throw(FactorError("KroneckerDelta needs at least two subscripts"))
-        return factor == 0 ? 0 : new{T, S}(name, subscripts, factor)
+        return factor == 0 ? 0 : new{S}(name, subscripts, factor)
     end
 end
 const KDelta = KroneckerDelta
 
-getSubType(::KroneckerDelta{T, S}) where {T, S} = S
+getSubType(::KroneckerDelta{S}) where S = S
 
 
 # Tree

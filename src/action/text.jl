@@ -4,6 +4,7 @@ text(sub::Subscript)::LaTeXString = string(getSubLabel(sub))
 
 # =============== Factor ===============
 text(num::Number)::LaTeXString = string(num) * " × "
+text(fac::SymbolFactor)::LaTeXString = text(fac.factor) * string(fac.name)
 text(fac::KroneckerDelta)::LaTeXString = text(fac.factor) * string(fac.name) * "_{$(_string_subscripts(fac.subscripts))}"
 text(fac::NumberFactor)::LaTeXString = text(fac.factor) * string(fac.name)
 text(fac::OperatorFactor)::LaTeXString = text(fac.factor) * string(fac.name) * "_{$(_string_subscripts(fac.subscripts))}"

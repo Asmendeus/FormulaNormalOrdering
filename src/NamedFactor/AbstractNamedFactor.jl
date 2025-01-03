@@ -1,14 +1,11 @@
 """
-    abstract type AbstractNamedFactor{T} end
+    abstract type AbstractNamedFactor end
 
 Abstract type of the named factor.
 
 # Description
-`T::Symbol` represents the type of a NamedFactor, only with two available values `:symbol` or `:certain`.
-    `T == :symbol` means that the named factor does not have an actual value, only with a name.
-    `T == :certain` means that the named factor have an actual value. You can choose to output the factor in symbolic form, or convert it into an exact number
 All structs from `AbstractNamedFactor` ought to have a fieldname `factor`.
 """
-abstract type AbstractNamedFactor{T} end
+abstract type AbstractNamedFactor end
 
-getFactorType(::AbstractNamedFactor{T}) where T = T
+getFactor(fac::AbstractNamedFactor) = fac.factor

@@ -1,36 +1,29 @@
 """
-    struct OperatorFactor{T} <: AbstractMultiplyFactor{T}
+    struct OperatorFactor <: AbstractMultiplyFactor
         name::Union{Symbol, AbstractString}
         subscripts::Tuple{Vararg{AbstractSubscript}}
         values::Dict{<:Tuple{Vararg{AbstractSubscript}}, <:Number}
-        factor::Union{Number, AbstractNamedFactor{T}}
+        factor::Union{Number, AbstractNamedFactor}
     end
 
 # Fields
 - `name::Union{Symbol, AbstractString}`
 - `subscripts::Tuple{Vararg{AbstractSubscript}}`
 - `values::Dict{<:Tuple{Vararg{AbstractSubscript}}, <:Number}`
-- `factor::Union{Number, AbstractNamedFactor{T}}`
+- `factor::Union{Number, AbstractNamedFactor}`
 
 # Description
 `OperatorFactor` is a factor whose value depends on the subscripts.
 All of possible values are stored in `values`, and its value is selected by `subscripts` in `:certain` type.
 """
-struct OperatorFactor{T} <: AbstractMultiplyFactor{T}
+struct OperatorFactor <: AbstractMultiplyFactor
     name::Union{Symbol, AbstractString}
     subscripts::Tuple{Vararg{AbstractSubscript}}
     values::Dict{<:Tuple{Vararg{AbstractSubscript}}, <:Number}
-    factor::Union{Number, AbstractNamedFactor{T}}
+    factor::Union{Number, AbstractNamedFactor}
 
-    function OperatorFactor(name::Union{Symbol, AbstractString}, subscripts::Tuple{Vararg{AbstractSubscript}}, values::Dict{<:Tuple{Vararg{AbstractSubscript}}, <:Number}, factor::AbstractNamedFactor{T}) where T
-        T in (:symbol, :certain) || throw(FactorTypeError("Unacceptable factor type $T. Factor type should be :symbol or :certain"))
-        T == :certain && !all(sub->(sub in keys(subscripts)), subscripts) && throw(FactorError("No value match the subscripts $(subscripts)!"))
-        return new{T}(name, subscripts, values, factor)
-    end
-    function OperatorFactor{T}(name::Union{Symbol, AbstractString}, subscripts::Tuple{Vararg{AbstractSubscript}}, values::Dict{<:Tuple{Vararg{AbstractSubscript}}, <:Number}, factor::Number=1) where T
-        T in (:symbol, :certain) || throw(FactorTypeError("Unacceptable factor type $T. Factor type should be :symbol or :certain"))
-        T == :certain && !all(sub->(sub in keys(subscripts)), subscripts) && throw(FactorError("No value match the subscripts $(subscripts)!"))
-        return factor == 0 ? 0 : new{T}(name, subscripts, values, factor)
+    function OperatorFactor(name::Union{Symbol, AbstractString}, subscripts::Tuple{Vararg{AbstractSubscript}}, values::Dict{<:Tuple{Vararg{AbstractSubscript}}, <:Number}, factor::Union{Number, AbstractNamedFactor}=1)
+        return factor == 0 ? 0 : new(name, subscripts, values, factor)
     end
 end
 const OFactor = OperatorFactor

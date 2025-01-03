@@ -13,7 +13,7 @@ include("Subscript/Subscript.jl")
 
 
 ################# Factor #################
-export AbstractNamedFactor, getFactorType
+export AbstractNamedFactor, getFactor
 include("NamedFactor/AbstractNamedFactor.jl")
 
 export AbstractMultiplyFactor
@@ -24,6 +24,8 @@ export NumberFactor, NFactor
 include("NamedFactor/MultiplyFactor/NumberFactor.jl")
 export OperatorFactor, OFactor
 include("NamedFactor/MultiplyFactor/OperatorFactor.jl")
+export SymbolFactor, SFactor
+include("NamedFactor/MultiplyFactor/SymbolFactor.jl")
 
 export AbstractLinearFactor
 include("NamedFactor/LinearFactor/AbstractLinearFactor.jl")
@@ -34,7 +36,7 @@ include("NamedFactor/LinearFactor/LinearFactor.jl")
 
 
 ################# action #################
-export FactorError, FactorTypeError
+export FactorError
 include("action/error.jl")
 
 export text

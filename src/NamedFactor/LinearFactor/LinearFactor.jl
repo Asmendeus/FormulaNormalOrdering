@@ -1,5 +1,5 @@
 """
-    struct LinearFactor{T} <: AbstractLinearFactor{T}
+    struct LinearFactor <: AbstractLinearFactor
         summation::Tuple{Vararg{Union{Number, AbstractNamedFactor}}}
         factor::Union{Number, AbstractNamedFactor}
     end
@@ -12,18 +12,17 @@
 `LinearFactor` provides only an addition structure for `AbstractMultiplyFactor`
 and a nested interface for `AbstractNamedFactor`, without a name.
 """
-struct LinearFactor{T} <: AbstractLinearFactor{T}
-    summation::Tuple{Vararg{Union{Number, AbstractMultiplyFactor{T}}}}
-    factor::Union{Number, AbstractNamedFactor{T}}
+struct LinearFactor <: AbstractLinearFactor
+    summation::Tuple{Vararg{Union{Number, AbstractMultiplyFactor}}}
+    factor::Union{Number, AbstractNamedFactor}
 
-    function LinearFactor(summation::Tuple{Vararg{Union{Number, AbstractMultiplyFactor{T}}}}, factor::Union{Number, AbstractNamedFactor{T}}) where T
-        T in (:symbol, :certain) || throw(FactorTypeError("Unacceptable factor type $T. Factor type should be :symbol or :certain"))
+    function LinearFactor(summation::Tuple{Vararg{Union{Number, AbstractMultiplyFactor}}}, factor::Union{Number, AbstractNamedFactor})
         if length(summation) == 0
             return 0
         elseif length(summation) == 1
             return factor * summation[1]
         else
-            return new{T}(summation, factor)
+            return new(summation, factor)
         end
     end
     function LinearFactor(summation::Tuple{Vararg{Number}}, factor::Number)
