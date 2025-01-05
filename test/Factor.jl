@@ -26,4 +26,17 @@
 
     σz = OFactor(:σz, (Spin(:σ), Spin(:σ′)), Dict((Spin(:↑), Spin(:↑))=>1, (Spin(:↓), Spin(:↑))=>0, (Spin(:↑), Spin(:↓))=>0, (Spin(:↓), Spin(:↓))=>-1))
     @test getFactor(σz * multi_nest_σδ) == σz * σz_upup
+
+    ϵ_δ = ϵ_ijk + 2*δ_ijk
+    @test getFactor(ϵ_δ) == 1
+    @test ϵ_δ == LinearFactor((SFactor("ϵ_ijk"), KDelta(:δ, (Site(:i), Site("j"), Site(L"k")), 2)), 1)
+
+    σz_δ = 2*σz_upup + δ_ijk
+    @test value(σz_δ) == 2 * value(σz_upup) + value(δ_ijk)
+    @test 2*σz_upup + δ_ijk == δ_ijk + 2*σz_upup
+    @test value(σz_upup * σz_δ) == 8
+    @test value(σz_upup * σz_δ) == value(σz_upup) * value(σz_δ)
+    @test LinearFactor((1, 2, 3), -1) == -6
+    @test LinearFactor((1, 2), σz_upup) == 3 * σz_upup
+    @test LinearFactor((1, σz_upup), 2) == 2 * (σz_upup + 1)
 end

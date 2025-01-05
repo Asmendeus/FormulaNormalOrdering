@@ -42,14 +42,14 @@ Base.:-(fac::LinearFactor) = typeof(fac)(fac.summation, -fac.factor)
 # =============== addition ===============
 # Factor
 #? TODO: Merging can be done based on tree structure
-Base.:+(num::Number, fac::AbstractMultiplyFactor) = LinearFactor([num, fac], 1)
-Base.:+(fac::AbstractMultiplyFactor, num::Number) = LinearFactor([fac, num], 1)
-Base.:+(fac1::AbstractMultiplyFactor, fac2::AbstractMultiplyFactor) = LinearFactor([fac1, fac2], 1)
-Base.:+(num::Number, fac::LinearFactor) = LinearFactor([multiply_factor_to_all(fac)..., num], 1)
-Base.:+(fac::LinearFactor, num::Number) = LinearFactor([num, multiply_factor_to_all(fac)...], 1)
-Base.:+(fac1::AbstractMultiplyFactor, fac2::LinearFactor) = LinearFactor([fac1, multiply_factor_to_all(fac2)...], 1)
-Base.:+(fac1::LinearFactor, fac2::AbstractMultiplyFactor) = LinearFactor([multiply_factor_to_all(fac1)..., fac2], 1)
-Base.:+(fac1::LinearFactor, fac2::LinearFactor) = LinearFactor([multiply_factor_to_all(fac1)..., multiply_factor_to_all(fac2)...], 1)
+Base.:+(num::Number, fac::AbstractMultiplyFactor) = LinearFactor((num, fac), 1)
+Base.:+(fac::AbstractMultiplyFactor, num::Number) = LinearFactor((fac, num), 1)
+Base.:+(fac1::AbstractMultiplyFactor, fac2::AbstractMultiplyFactor) = LinearFactor((fac1, fac2), 1)
+Base.:+(num::Number, fac::LinearFactor) = LinearFactor((multiply_factor_to_all(fac)..., num), 1)
+Base.:+(fac::LinearFactor, num::Number) = LinearFactor((num, multiply_factor_to_all(fac)...), 1)
+Base.:+(fac1::AbstractMultiplyFactor, fac2::LinearFactor) = LinearFactor((fac1, multiply_factor_to_all(fac2)...), 1)
+Base.:+(fac1::LinearFactor, fac2::AbstractMultiplyFactor) = LinearFactor((multiply_factor_to_all(fac1)..., fac2), 1)
+Base.:+(fac1::LinearFactor, fac2::LinearFactor) = LinearFactor((multiply_factor_to_all(fac1)..., multiply_factor_to_all(fac2)...), 1)
 
 
 # =============== minus ===============

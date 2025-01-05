@@ -25,7 +25,7 @@ struct LinearFactor <: AbstractLinearFactor
             return new(summation, factor)
         end
     end
-    function LinearFactor(summation::Tuple{Vararg{Number}}, factor::Number)
+    function LinearFactor(summation::Tuple{Vararg{Number}}, factor::Union{Number, AbstractNamedFactor})
         return factor * sum(summation)
     end
 end
