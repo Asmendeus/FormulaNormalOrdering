@@ -20,9 +20,17 @@ end
 
 
 # =============== Operator ===============
+function text(op::AnyonOperator{θ, K, S...})::LaTeXString
+    if getOpType(op) == :annihilation
+        return string(op.name) * "_{$(_string_subscripts(fac.subscripts))}"
+    else
+        return string(op.name) * "^\\dag" * "_{$(_string_subscripts(fac.subscripts))}"
+    end
+end
+text(op::IdentityOperator)::LaTeXString = ""
 
 
-
+# =============== built-in function ===============
 function _string_subscripts(subs::Tuple{Vararg{AbstractSubscript}})::String
     str = string(text(subs[1]))
     for sub in subs[2:end]

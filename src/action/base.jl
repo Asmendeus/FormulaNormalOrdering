@@ -2,9 +2,12 @@
 function Base.show(io::IO, op::AbstractNamedFactor)
     print(io, text(op))
 end
-# function Base.show(io::IO, op::AbstractOperator)
-#     print(io, text(op))
-# end
+function Base.show(io::IO, op::AbstractOperator)
+    print(io, text(op))
+end
+function Base.show(io::IO, op::IdentityOperator)
+    print(io, "$(typeof(op))($(op.name))")
+end
 
 
 

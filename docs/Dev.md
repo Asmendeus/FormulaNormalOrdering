@@ -32,10 +32,12 @@ abstract type AbstractOperator end
 
 abstract type AbstractBasicOperator <: AbstractOperator end
 
+abstract type AbstractIdentityOperator <: AbstractBasicOperator end
 abstract type AbstractAnyonOperator{θ, K, S...} <: AbstractBasicOperator end
-getAmplitude(::AbstractAnyonOperator{θ, K, S...}) = θ
+getPhase(::AbstractAnyonOperator{θ, K, S...}) = θ
 getOperatorType(::AbstractAnyonOperator{θ, K, S...}) = K # in (:a, :annihilation, :c, :creation)
-getSubDims(::AbstractAnyonOperator{θ, K, S...}) = (S...,)
+getSubTypes(::AbstractAnyonOperator{θ, K, S...}) = (S...,)
+
 struct AnyonOperator{θ, K, S...} <: AbstractAnyonOperator{θ, K, S...}
 
 const AbstractBosonOperator{K, S...} = AbstractAnyonOperator{0, K, S...}
@@ -44,7 +46,7 @@ const BosonOperator{K, S...} = AnyonOperator{0, K, S...}
 const AbstractFermionOperator{K, S...} = AbstractAnyonOperator{π, K, S...}
 const FermionOperator{K, S...} = AnyonOperator{π, K, S...}
 
-struct IdentityOperator <: AbstractBasicOperator
+struct IdentityOperator <: AbstractIdentityOperator
 
 
 abstract type AbstractLinearOperator <: AbstractOperator end
