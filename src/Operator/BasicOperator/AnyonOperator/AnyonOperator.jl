@@ -1,75 +1,64 @@
 """
-    struct AnyonOperator{θ, K, S...} <: AbstractAnyonOperator{θ, K, S...}
+    struct AnyonOperator{θ, K} <: AbstractAnyonOperator{θ, K} where S
         name::Union{Symbol, AbstractString}
-        subscript::Tuple{Vararg{AbstractSubscript}}
+        subscripts::Tuple{Vararg{AbstractSubscript}}
     end
+
+    const AnyonAnnihilationOperator{θ} = AnyonOperator{θ, :a}
+    const AnyonCreationOperator{θ} = AnyonOperator{θ, :c}
 
 # Fields
 - `name::Union{Symbol, AbstractString}`
-- `subscript::Tuple{Vararg{AbstractSubscript}}`
+- `subscripts::Tuple{Vararg{AbstractSubscript}}`
 """
-struct AnyonOperator{θ, K, S...} <: AbstractAnyonOperator{θ, K, S...}
+struct AnyonOperator{θ, K} <: AbstractAnyonOperator{θ, K}
     name::Union{Symbol, AbstractString}
-    subscript::Tuple{Vararg{AbstractSubscript}}
+    subscripts::Tuple{Vararg{AbstractSubscript}}
 
-    function AnyonOperator{θ, K}(name::Union{Symbol, AbstractString}, subscript::Tuple{Vararg{AbstractSubscript}}) where {θ, K}
+    function AnyonOperator{θ, K}(name::Union{Symbol, AbstractString}, subscripts::Tuple{Vararg{AbstractSubscript}}) where {θ, K}
         isa(θ, Real) || throw(OperatorError("The swapping phase `θ` should be a real number!"))
-        K in (:a, :annihilation, :c, :creation) || throw(OperatorError("The operator type `K` should be in (:a, :annihilation, :c, :creation)"))
-        S = map(getSubType, subscript)
-        return new{θ, K, S...}(name, subscript)
+        K in (:a, :c) || throw(OperatorError("The operator type `K` should be in (:a, :c)"))
+        return new{θ, K}(name, subscripts)
+    end
+    function AnyonOperator{θ, K}(name::Union{Symbol, AbstractString}, subscript::AbstractSubscript) where {θ, K}
+        isa(θ, Real) || throw(OperatorError("The swapping phase `θ` should be a real number!"))
+        K in (:a, :c) || throw(OperatorError("The operator type `K` should be in (:a, :c)"))
+        return new{θ, K}(name, (subscript,))
     end
 end
 
+const AnyonAnnihilationOperator{θ} = AnyonOperator{θ, :a}
+const AAOp = AnyonAnnihilationOperator
+
+const AnyonCreationOperator{θ} = AnyonOperator{θ, :c}
+const ACOp = AnyonCreationOperator
+
+getSubTypes(op::AnyonOperator) = map(getSubType, op.subscripts)
+
 
 """
-    const BosonOperator{K, S...} = AnyonOperator{0, K, S...}
-    const BosonAnnihilationOperator{S...} = BosonOperator{:annihilation, S...}
-    const BosonCreationOperator{S...} = BosonOperator{:creation, S...}
+    const BosonOperator{K} = AnyonOperator{0, K}
+    const BosonAnnihilationOperator = BosonOperator{:a}
+    const BosonCreationOperator = BosonOperator{:c}
 """
-const BosonOperator{K, S...} = AnyonOperator{0, K, S...}
-function BosonOperator{K}(name::Union{Symbol, AbstractString}, subscript::Tuple{Vararg{AbstractSubscript}}) where K
-        K in (:a, :annihilation, :c, :creation) || throw(OperatorError("The operator type `K` should be in (:a, :annihilation, :c, :creation)"))
-        S = map(getSubType, subscript)
-        return BosonOperator{K, S...}(name, subscript)
-end
+const BosonOperator{K} = AnyonOperator{0, K}
 
-const BosonAnnihilationOperator{S...} = BosonOperator{:annihilation, S...}
-function BosonAnnihilationOperator(name::Union{Symbol, AbstractString}, subscript::Tuple{Vararg{AbstractSubscript}})
-    S = map(getSubType, subscript)
-    return BosonAnnihilationOperator{S...}(name, subscript)
-end
+const BosonAnnihilationOperator = BosonOperator{:a}
 const BAOp = BosonAnnihilationOperator
 
-const BosonCreationOperator{S...} = BosonOperator{:creation, S...}
-function BosonCreationOperator(name::Union{Symbol, AbstractString}, subscript::Tuple{Vararg{AbstractSubscript}})
-    S = map(getSubType, subscript)
-    return BosonCreationOperator{S...}(name, subscript)
-end
+const BosonCreationOperator = BosonOperator{:c}
 const BCOp = BosonCreationOperator
 
 
 """
-    const FermionOperator{K, S...} = AnyonOperator{π, K, S...}
-    const FermionAnnihilationOperator{S...} = FermionOperator{:annihilation, S...}
-    const FermionCreationOperator{S...} = FermionOperator{:creation, S...}
+    const FermionOperator{K} = AnyonOperator{π, K}
+    const FermionAnnihilationOperator = FermionOperator{:a}
+    const FermionCreationOperator = FermionOperator{:c}
 """
-const FermionOperator{K, S...} = AnyonOperator{π, K, S...}
-function FermionOperator{K}(name::Union{Symbol, AbstractString}, subscript::Tuple{Vararg{AbstractSubscript}}) where K
-    K in (:a, :annihilation, :c, :creation) || throw(OperatorError("The operator type `K` should be in (:a, :annihilation, :c, :creation)"))
-    S = map(getSubType, subscript)
-    return FermionOperator{K, S...}(name, subscript)
-end
+const FermionOperator{K} = AnyonOperator{π, K}
 
-const FermionAnnihilationOperator{S...} = FermionOperator{:annihilation, S...}
-function FermionAnnihilationOperator(name::Union{Symbol, AbstractString}, subscript::Tuple{Vararg{AbstractSubscript}})
-    S = map(getSubType, subscript)
-    return FermionAnnihilationOperator{S...}(name, subscript)
-end
+const FermionAnnihilationOperator = FermionOperator{:a}
 const FAOp = FermionAnnihilationOperator
 
-const FermionCreationOperator{S...} = FermionOperator{:creation, S...}
-function FermionCreationOperator(name::Union{Symbol, AbstractString}, subscript::Tuple{Vararg{AbstractSubscript}})
-    S = map(getSubType, subscript)
-    return FermionCreationOperator{S...}(name, subscript)
-end
+const FermionCreationOperator = FermionOperator{:c}
 const FCOp = FermionCreationOperator

@@ -5,9 +5,6 @@ end
 function Base.show(io::IO, op::AbstractOperator)
     print(io, text(op))
 end
-function Base.show(io::IO, op::IdentityOperator)
-    print(io, "$(typeof(op))($(op.name))")
-end
 
 
 
@@ -32,6 +29,13 @@ end
 function Base.:(==)(fac1::LinearFactor, fac2::LinearFactor)
     return (Set(fac1.summation) == Set(fac2.summation)) && (fac1.factor == fac2.factor)
 end
+
+# Operator
+function Base.:(==)(op1::AnyonOperator{θ₁, K}, op2::AnyonOperator{θ₂, K}) where {θ₁, θ₂, K}
+    return (θ₁ == θ₂) && (op1.name == op2.name) && (Set(op1.subscripts) == Set(op2.subscripts))
+end
+Base.:(==)(::IdentityOperator, ::IdentityOperator) = true
+
 
 # =============== negative ===============
 # Factor

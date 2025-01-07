@@ -32,6 +32,7 @@ include("NamedFactor/LinearFactor/AbstractLinearFactor.jl")
 export LinearFactor, LFactor
 include("NamedFactor/LinearFactor/LinearFactor.jl")
 
+
 ################# Operator #################
 export AbstractOperator
 include("Operator/AbstractOperator.jl")
@@ -39,19 +40,26 @@ include("Operator/AbstractOperator.jl")
 export AbstractBasicOperator
 include("Operator/BasicOperator/AbstractBasicOperator.jl")
 export AbstractAnyonOperator, AbstractBosonOperator, AbstractFermionOperator
-export getPhase, getOpType, getSubTypes
+export getPhase, getOpType
 include("Operator/BasicOperator/AnyonOperator/AbstractAnyonOperator.jl")
-export AnyonOperator, BosonOperator, FermionOperator
-export BosonAnnihilationOperator, BAOp, BosonCreationOperator, BCOp
-export FermionAnnihilationOperator, FAOp, FermionCreationOperator, FCOp
+export AnyonOperator, getSubTypes, AnyonAnnihilationOperator, AAOp, AnyonCreationOperator, ACOp
+export BosonOperator, BosonAnnihilationOperator, BAOp, BosonCreationOperator, BCOp
+export FermionOperator, FermionAnnihilationOperator, FAOp, FermionCreationOperator, FCOp
 include("Operator/BasicOperator/AnyonOperator/AnyonOperator.jl")
-
 export AbstractIdentityOperator
 include("Operator/BasicOperator/IdentityOperator/AbstractIdentityOperator.jl")
 export IdentityOperator, IdOp
 include("Operator/BasicOperator/IdentityOperator/IdentityOperator.jl")
 
+export AbstractMultiplyOperator
+include("Operator/MultiplyOperator/AbstractMultiplyOperator.jl")
+export MultiplyOperator, MOp, getOperators
+include("Operator/MultiplyOperator/MultiplyOperator.jl")
 
+export AbstractLinearOperator
+include("Operator/LinearOperator/AbstractLinearOperator.jl")
+export LinearOperator, LOp
+include("Operator/LinearOperator/LinearOperator.jl")
 
 
 ################# action #################
