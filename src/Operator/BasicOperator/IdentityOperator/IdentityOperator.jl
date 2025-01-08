@@ -12,5 +12,9 @@
 """
 struct IdentityOperator <: AbstractIdentityOperator
     name::Union{Symbol, AbstractString}
+
+    function IdentityOperator(name::Union{Symbol, AbstractString}=:I)
+        return new(name)
+    end
 end
 const IdOp = IdentityOperator

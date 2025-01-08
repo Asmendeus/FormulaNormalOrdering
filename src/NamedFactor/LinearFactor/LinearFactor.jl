@@ -16,7 +16,7 @@ struct LinearFactor <: AbstractLinearFactor
     summation::Tuple{Vararg{Union{Number, AbstractMultiplyFactor}}}
     factor::Union{Number, AbstractNamedFactor}
 
-    function LinearFactor(summation::Tuple{Vararg{Union{Number, AbstractMultiplyFactor}}}, factor::Union{Number, AbstractNamedFactor})
+    function LinearFactor(summation::Tuple{Vararg{Union{Number, AbstractMultiplyFactor}}}, factor::Union{Number, AbstractNamedFactor}=1)
         if length(summation) == 0
             return 0
         elseif length(summation) == 1
@@ -25,7 +25,7 @@ struct LinearFactor <: AbstractLinearFactor
             return new(summation, factor)
         end
     end
-    function LinearFactor(summation::Tuple{Vararg{Number}}, factor::Union{Number, AbstractNamedFactor})
+    function LinearFactor(summation::Tuple{Vararg{Number}}, factor::Union{Number, AbstractNamedFactor}=1)
         return factor * sum(summation)
     end
 end

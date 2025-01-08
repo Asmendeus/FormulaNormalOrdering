@@ -16,3 +16,11 @@ normalize_factor(fac::LinearFactor) = typeof(fac)(fac.summation, 1)
 return a new linear factor that multiply the factor to all summation factors
 """
 multiply_factor_to_all(fac::LinearFactor) = map(x->fac.factor * x, fac.summation)
+
+"""
+    multiply_factor_to_all(op::LinearOperator)
+
+# Description
+return a new linear operator that multiply the factor to all summation operators
+"""
+multiply_factor_to_all(op::LinearOperator) = LinearOperator(map(x->op.factor * x, op.operators))
