@@ -27,7 +27,7 @@ function Base.:(==)(fac1::OperatorFactor, fac2::OperatorFactor)
     return (fac1.name == fac2.name) && (fac1.subscripts == fac2.subscripts) && (fac1.values == fac2.values) && (fac1.factor == fac2.factor)
 end
 function Base.:(==)(fac1::LinearFactor, fac2::LinearFactor)
-    return (Set(fac1.summation) == Set(fac2.summation)) && (fac1.factor == fac2.factor)
+    return (fac1.factor == fac2.factor) && all(x->x in fac1.summation, fac2.summation) && all(x->x in fac2.summation, fac1.summation)
 end
 
 # Operator
@@ -40,7 +40,7 @@ function Base.:(==)(op1::MultiplyOperator, op2::MultiplyOperator)
     return (op1.operators == op2.operators) && (op1.factor == op2.factor)
 end
 function Base.:(==)(op1::LinearOperator, op2::LinearOperator)
-    return (op1.operators == op2.operators) && (op1.factor == op2.factor)
+    return (op1.factor == op2.factor) && all(x->x in op1.operators, op2.operators) && all(x->x in op2.operators, op1.operators)
 end
 
 

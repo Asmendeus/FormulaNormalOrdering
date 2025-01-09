@@ -65,16 +65,16 @@ include("Operator/LinearOperator/LinearOperator.jl")
 ################# action #################
 export FactorError, OperatorError
 include("action/error.jl")
-
 export text
 include("action/text.jl")
-
 export normalize_factor, multiply_factor_to_all
 include("action/tools.jl")
-
 include("action/base.jl")
-
 export value
 include("action/value.jl")
+export swap
+include("action/swap.jl")
+export sort
+include("action/sort.jl")
 
 end # module FormulaNormalOrdering

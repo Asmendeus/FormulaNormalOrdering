@@ -11,3 +11,12 @@ function value(fac::OperatorFactor)
     return fac.values[fac.subscripts] * value(fac.factor)
 end
 value(fac::LinearFactor) = sum(value, fac.summation) * value(fac.factor)
+
+# =============== Operator ===============
+value(op::AbstractBasicOperator) = op
+value(op::MultiplyOperator) = MultiplyOperator(op.operators, value(op.factor))
+function value(op::LinearOperator)
+    _tempsum = map(value, op.operators)
+    _tempsum = eltype(_tempsum) <: AbstractMultiplyFactor ? _tempsum : [_tempsum[i] for i in findall(x->x!=0, _tempsum)]
+    return LinearOperator(_tempsum, value(op.factor))
+end

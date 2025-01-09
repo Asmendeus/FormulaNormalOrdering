@@ -18,6 +18,7 @@ struct AnyonOperator{θ, K} <: AbstractAnyonOperator{θ, K}
     function AnyonOperator{θ, K}(name::Union{Symbol, AbstractString}, subscripts::Tuple{Vararg{AbstractSubscript}}) where {θ, K}
         isa(θ, Real) || throw(OperatorError("The swapping phase `θ` should be a real number!"))
         K in (:a, :c) || throw(OperatorError("The operator type `K` should be in (:a, :c)"))
+        allunique(map(x->typeof(x), subscripts)) || throw(OperatorError("The types of operator subscripts should all be different"))
         return new{θ, K}(name, subscripts)
     end
     function AnyonOperator{θ, K}(name::Union{Symbol, AbstractString}, subscript::AbstractSubscript) where {θ, K}
