@@ -3,6 +3,7 @@ module FormulaNormalOrdering
 using AbstractTrees
 using DataStructures
 using LaTeXStrings
+import Combinatorics.permutations
 
 ################# Subscript #################
 export AbstractSubscript, getSubType
@@ -76,5 +77,7 @@ export swap
 include("action/swap.jl")
 export sort
 include("action/sort.jl")
+export wick
+include("action/wick.jl")
 
 end # module FormulaNormalOrdering
