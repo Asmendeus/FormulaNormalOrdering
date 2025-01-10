@@ -12,6 +12,7 @@
 `LinearFactor` provides only an addition structure for `AbstractMultiplyFactor`
 and a nested interface for `AbstractNamedFactor`, without a name.
 """
+#? TODO: The same operators can be merged.
 struct LinearFactor <: AbstractLinearFactor
     summation::Tuple{Vararg{Union{Number, AbstractMultiplyFactor}}}
     factor::Union{Number, AbstractNamedFactor}

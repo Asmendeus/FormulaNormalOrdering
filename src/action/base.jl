@@ -14,6 +14,7 @@ end
 Base.:(==)(sub1::Subscript{S}, sub2::Subscript{S}) where S = (sub1.label == sub2.label)
 
 # Factor
+#? TODO: The multiplication of the coefficients in different orders is equal, which can be achieved with the tree structure
 function Base.:(==)(fac1::SymbolFactor, fac2::SymbolFactor)
     return (fac1.name == fac2.name) && (fac1.factor == fac2.factor)
 end

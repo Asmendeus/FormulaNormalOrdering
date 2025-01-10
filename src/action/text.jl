@@ -3,6 +3,7 @@ text(sub::Subscript)::LaTeXString = string(getSubLabel(sub))
 
 
 # =============== Factor ===============
+#? TODO: Text can be simplified when factor is 1 or -1
 text(num::Number)::LaTeXString = string(num)
 text(fac::SymbolFactor)::LaTeXString = text(fac.factor) * (isa(fac.factor, Number) ? " × " : "") * string(fac.name)
 text(fac::KroneckerDelta)::LaTeXString = text(fac.factor) * (isa(fac.factor, Number) ? " × " : "") * string(fac.name) * "_{$(_string_subscripts(fac.subscripts))}"
@@ -21,6 +22,7 @@ end
 
 
 # =============== Operator ===============
+#? TODO: Text can be simplified when factor is 1 or -1
 function text(op::AnyonOperator{θ, K})::LaTeXString where {θ, K}
     return string(op.name) * (getOpType(op) == :a ? "" : "^\\dag") * "_{$(_string_subscripts(op.subscripts))}"
 end
