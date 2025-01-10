@@ -16,7 +16,7 @@ mutable struct MultiplyOperator <: AbstractMultiplyOperator
     factor::Union{Number, AbstractNamedFactor}
 
     function MultiplyOperator(operators::Vector{<:AbstractBasicOperator}, factor::Union{Number, AbstractNamedFactor}=1)
-        if factor == 0
+        if factor == 0 || length(operators) == 0
             return 0
         else
             _tempops = filter(x -> !isa(x, AbstractIdentityOperator), operators)

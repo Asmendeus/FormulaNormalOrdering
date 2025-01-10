@@ -8,7 +8,7 @@ mutable struct LinearOperator <: AbstractLinearOperator
         elseif length(operators) == 1
             return factor * operators[1]
         else
-            return factor == 0 ? 0 : new(operators, factor)
+            return factor == 0 ? 0 : new(sort(operators, by=x->length(x.operators), rev=true), factor)
         end
     end
     function LinearOperator(operator::AbstractMultiplyOperator, factor::Union{Number, AbstractNamedFactor}=1)
