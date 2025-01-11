@@ -1,3 +1,5 @@
+using Test
+
 @testset "factor test" begin
     ϵ_ijk = SFactor("ϵ_ijk")
     @test getName(ϵ_ijk) == "ϵ_ijk"

@@ -1,3 +1,5 @@
+using Test
+
 @testset "Subscript property" begin
     si = Subscript{:site}(:i)
     sj = Subscript(:site, :j)
