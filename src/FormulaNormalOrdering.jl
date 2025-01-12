@@ -68,7 +68,7 @@ export FactorError, OperatorError
 include("action/error.jl")
 export text
 include("action/text.jl")
-export normalize_factor, multiply_factor_to_all
+export normalize_factor, multiply_factor_to_all, isca
 include("action/tools.jl")
 include("action/base.jl")
 export value
@@ -77,7 +77,12 @@ export swap
 include("action/swap.jl")
 export sort
 include("action/sort.jl")
+
+
+################# numerical #################
 export wick
-include("action/wick.jl")
+include("numerical/wick.jl")
+export expectation
+include("numerical/expectation.jl")
 
 end # module FormulaNormalOrdering

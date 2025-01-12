@@ -1,16 +1,21 @@
 """
-    function wick(G::Matrix{<:Number}, indices::Int...)
-    function wick(G::Matrix{<:Number}, indices::NTuple{N, Int})
+    wick(G::Matrix{<:Number}, indices::Int...)
 
 # Description
 The function calculating expected value of observable by Wick theorem.
 
 # Input
-- `G::Matrix{<:Number}`: Green Function G_ij = ⟨ϕ|c^dag_i c_j|φ⟩ = I - ⟨ϕ|c_i c^dag_j|φ⟩
-- `indices::Int...` / `indices::NTuple{N, Int}`: the indices corresponding to the base operators
+- `G::Matrix{<:Number}`: Green function G_ij = ⟨ϕ|c^dag_i c_j|φ⟩ = I - ⟨ϕ|c_i c^dag_j|φ⟩
+- `indices::Int...`: the indices corresponding to the base operators
 
-# return
+# Return
 - `::Number`: expected value of observable
+
+# Warning
+`wick(G::Matrix{<:Number}, indices::Int...)` provides a general method.
+However, due to the large number of the built-in function `_permutation_sign` called,
+the efficiency of calculating the expectation of n-body operator with it decreases rapidly with n.
+It is recommended to use `_auto_wick_text` to generate the required `wick` method.
 """
 function wick(G::Matrix{<:Number}, indices::Int...)
     @warn @which wick(G, indices...)
@@ -21,10 +26,6 @@ function wick(G::Matrix{<:Number}, indices::Int...)
     index_index_permutation = collect(permutations(1:half_n))
     index = indices[half_n+1:end]
     return sum(x->_permutation_sign(x)*prod(y->G[indices[y], index[x[y]]], 1:half_n), index_index_permutation)
-end
-function wick(G::Matrix{<:Number}, indices::NTuple{N, Int})
-    @assert mod(N, 2) == 0 "The observable is beyond the measurable range of Slater's determinant space"
-    return wick(G, indices...)
 end
 function _permutation_sign(p)
     n = length(p)

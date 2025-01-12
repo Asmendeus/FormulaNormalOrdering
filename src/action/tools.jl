@@ -24,3 +24,23 @@ multiply_factor_to_all(fac::LinearFactor) = map(x->fac.factor * x, fac.summation
 return a new linear operator that multiply the factor to all summation operators
 """
 multiply_factor_to_all(op::LinearOperator) = LinearOperator(map(x->op.factor * x, op.operators))
+
+"""
+    isca(op::MultiplyOperator)
+    isca(op::LinearOperator)
+
+# Description
+Returns a Boolean variable indicating whether all creation operators precede annihilation operators
+"""
+function isca(op::MultiplyOperator)::Bool
+    if length(op.operators) > 1
+        _indices = findall(x->getOpType(x)==:c, op.operators)
+        return _indices == collect(1:length(_indices))
+    else
+        return true
+    end
+end
+
+function isca(op::LinearOperator)::Bool
+    return all(isca, op.operators)
+end
