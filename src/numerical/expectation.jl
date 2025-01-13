@@ -9,6 +9,10 @@
 
 # Return
 - `::Number`: expected value of the operator `op`
+
+# Warning
+The performance optimization of `expectation` function is poor, large-scale calculation
+of the occasion, please use `wick` function manual calculation.
 """
 function expectation(G::Matrix{<:Number}, op::MultiplyOperator, f::Function)
     if !isca(op)
