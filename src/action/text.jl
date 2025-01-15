@@ -1,3 +1,11 @@
+"""
+    text(sub_fac_op::Union{AbstractSubscript, AbstractNamedFactor, Number, AbstractOperator})
+
+# Description
+Export LaTeX text of the argument.
+"""
+function text(sub_fac_op::Union{AbstractSubscript, AbstractNamedFactor, Number, AbstractOperator}) end
+
 # =============== Subscript ===============
 text(sub::Subscript)::LaTeXString = string(getSubLabel(sub))
 

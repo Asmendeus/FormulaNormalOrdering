@@ -38,18 +38,18 @@ end
 
     @test swap(fa1, fa2) == swap(fa1 * fa2) == - fa2 * fa1
     @test value(swap(fa1, fa2)) == - fa2 * fa1
-    @test swap(fa1, fc1) == swap(fa1 * fc1) == - fc1 * fa1 + KDelta(:δ, (Site(:i), Site(:i))) * KDelta(:δ, (Spin(:σ), Spin(:σ))) * IdOp()
+    @test swap(fa1, fc1) == swap(fa1 * fc1) == - fc1 * fa1 + KDelta(:δ, (Spin(:σ), Spin(:σ))) * KDelta(:δ, (Site(:i), Site(:i))) * IdOp()
     @test value(swap(fa1, fc1)) == - fc1 * fa1 + IdOp()
-    @test swap(fa1, fc2) == swap(fa1 * fc2) == - fc2 * fa1 + KDelta(:δ, (Site(:i), Site(:j))) * KDelta(:δ, (Spin(:σ), Spin(:σ′))) * IdOp()
+    @test swap(fa1, fc2) == swap(fa1 * fc2) == - fc2 * fa1 + KDelta(:δ, (Spin(:σ), Spin(:σ′))) * KDelta(:δ, (Site(:i), Site(:j))) * IdOp()
     @test value(swap(fa1, fc2)) == - fc2 * fa1
     @test swap(fa1, fc3) == swap(fa1 * fc3) == - fc3 * fa1
     @test value(swap(fa1, fc3)) == - fc3 * fa1
 
     @test swap(ba1, ba2) == swap(ba1 * ba2) == ba2 * ba1
     @test value(swap(ba1, ba2)) == ba2 * ba1
-    @test swap(ba1, bc1) == swap(ba1 * bc1) == bc1 * ba1 + KDelta(:δ, (Site(:i), Site(:i))) * KDelta(:δ, (Spin(:σ), Spin(:σ))) * IdOp()
+    @test swap(ba1, bc1) == swap(ba1 * bc1) == bc1 * ba1 + KDelta(:δ, (Spin(:σ), Spin(:σ))) * KDelta(:δ, (Site(:i), Site(:i))) * IdOp()
     @test value(swap(ba1, bc1)) == bc1 * ba1 + IdOp()
-    @test swap(ba1, bc2) == swap(ba1 * bc2) == bc2 * ba1 + KDelta(:δ, (Site(:i), Site(:j))) * KDelta(:δ, (Spin(:σ), Spin(:σ′))) * IdOp()
+    @test swap(ba1, bc2) == swap(ba1 * bc2) == bc2 * ba1 + KDelta(:δ, (Spin(:σ), Spin(:σ′))) * KDelta(:δ, (Site(:i), Site(:j))) * IdOp()
     @test value(swap(ba1, bc2)) == bc2 * ba1
     @test swap(ba1, bc3) == swap(ba1 * bc3) == bc3 * ba1
     @test value(swap(ba1, bc3)) == bc3 * ba1
@@ -63,21 +63,21 @@ end
     @test sort(fa1*fc1; operators=[fc1, fa1]) == sort(fa1*fc1; indices=[2,1]) == sort(fa1*fc1) == swap(fa1,fc1) == swap(fa1*fc1)
     @test sort(fa1*fc2; operators=[fc2, fa1]) == sort(fa1*fc2; indices=[2,1]) == sort(fa1*fc2) == swap(fa1,fc2) == swap(fa1*fc2)
     @test (sort(fa1*fa2*fc1*fc2; operators=[fc1, fc2, fa1, fa2]) == sort(fa1*fa2*fc1*fc2; indices=[3,4,1,2]) == sort(fa1*fa2*fc1*fc2)
-        == fc1*fc2*fa1*fa2 + δii*δσσ*fc2*fa2 + δjj*δσ′σ′*fc1*fa1 - δij*δσσ′*fc1*fa2 - δij*δσσ′*fc2*fa1 + δij*δσσ′*δij*δσσ′ - δjj*δσ′σ′*δii*δσσ)
+        == fc1*fc2*fa1*fa2 + δσσ*δii*fc2*fa2 + δσ′σ′*δjj*fc1*fa1 - δσσ′*δij*fc1*fa2 - δσσ′*δij*fc2*fa1 + δσσ′*δij*δσσ′*δij - δσ′σ′*δjj*δσσ*δii)
     @test (sort(fa1*fa2*fc1*fc1; operators=[fc1, fa1, fa2]) == sort(fa1*fa2*fc1*fc1; indices=[3,4,1,2]) == sort(fa1*fa2*fc1*fc1; indices=[4,3,1,2]) == sort(fa1*fa2*fc1*fc1)
-        == fc1*fc1*fa1*fa2 + δii*δσσ*fc1*fa2 + δij*δσσ′*fc1*fa1 - δii*δσσ*fc1*fa2 - δij*δσσ′*fc1*fa1 + δij*δσσ′*δii*δσσ - δij*δσσ′*δii*δσσ)
+        == fc1*fc1*fa1*fa2 + δσσ*δii*fc1*fa2 + δσσ′*δij*fc1*fa1 - δσσ*δii*fc1*fa2 - δσσ′*δij*fc1*fa1 + δσσ′*δij*δσσ*δii - δσσ′*δij*δσσ*δii)
     @test (sort(fa1*fa1*fc1*fc1; operators=[fc1, fa1]) == sort(fa1*fa1*fc1*fc1; indices=[3,4,1,2]) == sort(fa1*fa1*fc1*fc1)
-        == fc1*fc1*fa1*fa1 + δii*δσσ*fc1*fa1 + δii*δσσ*fc1*fa1 - δii*δσσ*fc1*fa1 - δii*δσσ*fc1*fa1 + δii*δσσ*δii*δσσ - δii*δσσ*δii*δσσ)
+        == fc1*fc1*fa1*fa1 + δσσ*δii*fc1*fa1 + δσσ*δii*fc1*fa1 - δσσ*δii*fc1*fa1 - δσσ*δii*fc1*fa1 + δσσ*δii*δσσ*δii - δσσ*δii*δσσ*δii)
 
     @test sort(ba1*ba2; operators=[ba2, ba1]) == sort(ba1*ba2; indices=[2,1]) == swap(ba1,ba2) == swap(ba1*ba2)
     @test sort(ba1*bc1; operators=[bc1, ba1]) == sort(ba1*bc1; indices=[2,1]) == swap(ba1,bc1) == swap(ba1*bc1)
     @test sort(ba1*bc2; operators=[bc2, ba1]) == sort(ba1*bc2; indices=[2,1]) == swap(ba1,bc2) == swap(ba1*bc2)
     @test (sort(ba1*ba2*bc1*bc2; operators=[bc1, bc2, ba1, ba2]) == sort(ba1*ba2*bc1*bc2; indices=[3,4,1,2]) == sort(ba1*ba2*bc1*bc2)
-        == bc1*bc2*ba1*ba2 + δii*δσσ*bc2*ba2 + δjj*δσ′σ′*bc1*ba1 + δij*δσσ′*bc1*ba2 + δij*δσσ′*bc2*ba1 + δij*δσσ′*δij*δσσ′ + δjj*δσ′σ′*δii*δσσ)
+        == bc1*bc2*ba1*ba2 + δσσ*δii*bc2*ba2 + δσ′σ′*δjj*bc1*ba1 + δσσ′*δij*bc1*ba2 + δσσ′*δij*bc2*ba1 + δσσ′*δij*δσσ′*δij + δσ′σ′*δjj*δσσ*δii)
     @test (sort(ba1*ba2*bc1*bc1; operators=[bc1, ba1, ba2]) == sort(ba1*ba2*bc1*bc1; indices=[3,4,1,2]) == sort(ba1*ba2*bc1*bc1; indices=[4,3,1,2]) == sort(ba1*ba2*bc1*bc1)
-        == bc1*bc1*ba1*ba2 + δii*δσσ*bc1*ba2 + δij*δσσ′*bc1*ba1 + δii*δσσ*bc1*ba2 + δij*δσσ′*bc1*ba1 + δij*δσσ′*δii*δσσ + δij*δσσ′*δii*δσσ)
+        == bc1*bc1*ba1*ba2 + δσσ*δii*bc1*ba2 + δσσ′*δij*bc1*ba1 + δσσ*δii*bc1*ba2 + δσσ′*δij*bc1*ba1 + δσσ′*δij*δσσ*δii + δσσ′*δij*δσσ*δii)
     @test (sort(ba1*ba1*bc1*bc1; operators=[bc1, ba1]) == sort(ba1*ba1*bc1*bc1; indices=[3,4,1,2]) == sort(ba1*ba1*bc1*bc1)
-        == bc1*bc1*ba1*ba1 + δii*δσσ*bc1*ba1 + δii*δσσ*bc1*ba1 + δii*δσσ*bc1*ba1 + δii*δσσ*bc1*ba1 + δii*δσσ*δii*δσσ + δii*δσσ*δii*δσσ)
+        == bc1*bc1*ba1*ba1 + δσσ*δii*bc1*ba1 + δσσ*δii*bc1*ba1 + δσσ*δii*bc1*ba1 + δσσ*δii*bc1*ba1 + δσσ*δii*δσσ*δii + δσσ*δii*δσσ*δii)
 
     @test (sort(fa1*fa2 + 2*fa1*fc1 + fa1*fc2 + 3*fa1*fa2*fc1*fc2 + fa1*fa2*4*fc1*fc1 + fa1*fa1*5*fc1*fc1; operators=[fc1,fc2,fa1,fa2])
         == sort(fa1*fa2) + sort(2*fa1*fc1) + sort(fa1*fc2) + 3*sort(fa1*fa2*fc1*fc2) + 4*sort(fa1*fa2*fc1*fc1) + sort(fa1*fa1*5*fc1*fc1))

@@ -1,3 +1,11 @@
+"""
+    value(fac_op::Union{AbstractNamedFactor, Number, AbstractOperator})
+
+# Description
+Return a certain value for factors.
+"""
+function value(fac_op::Union{AbstractNamedFactor, Number, AbstractOperator}) end
+
 # =============== Factor ===============
 value(num::Number) = num
 

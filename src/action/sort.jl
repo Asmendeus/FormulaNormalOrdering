@@ -1,3 +1,18 @@
+"""
+    Base.sort(op::MultiplyOperator; deltaname::Union{Symbol, AbstractString}=:δ, idname::Union{Symbol, AbstractString}=:I, kwargs...)
+
+# Arguments
+- `op::MultiplyOperator`: many-body operator expected to be sorted
+- `deltaname::Union{Symbol, AbstractString}=:δ`: name of KroneckerDelta(if it exists)
+- `idname::Union{Symbol, AbstractString}=:I`: name of IdentityOperator(if it exists)
+
+# Kwargs
+- `operators::Union{Vector{<:AbstractBasicOperator}, Tuple{Vararg{<:AbstractBasicOperator}}}`: basic operator order
+- `indices::Union{Vector{Int64}, NTuple{N, Int64}}`: index order mapping from basic operator order
+
+# Return
+- `op::Union{LinearOperator, MultiplyOperator}`: ordered many-body operator
+"""
 function Base.sort(op::MultiplyOperator; deltaname::Union{Symbol, AbstractString}=:δ, idname::Union{Symbol, AbstractString}=:I, kwargs...)
     length(op.operators) == 1 && throw(ArgumentError("Multiply operator with only one basic operator cannot be sorted"))
 
@@ -53,6 +68,20 @@ function Base.sort(op::MultiplyOperator; deltaname::Union{Symbol, AbstractString
     return len == 1 ? new_ops[1] : LinearOperator(new_ops)
 end
 
+"""
+    Base.sort(op::LinearOperator; deltaname::Union{Symbol, AbstractString}=:δ, idname::Union{Symbol, AbstractString}=:I, kwargs...)
+
+# Arguments
+- `op::LinearOperator`: many-body operator expected to be sorted
+- `deltaname::Union{Symbol, AbstractString}=:δ`: name of KroneckerDelta(if it exists)
+- `idname::Union{Symbol, AbstractString}=:I`: name of IdentityOperator(if it exists)
+
+# Kwargs
+- `operators::Union{Vector{<:AbstractBasicOperator}, Tuple{Vararg{<:AbstractBasicOperator}}}`: basic operator order
+
+# Return
+- `op::Union{LinearOperator, MultiplyOperator}`: ordered many-body operator
+"""
 function Base.sort(op::LinearOperator; deltaname::Union{Symbol, AbstractString}=:δ, idname::Union{Symbol, AbstractString}=:I, kwargs...)
     operators = let
         if haskey(kwargs, :operators)

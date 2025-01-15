@@ -4,7 +4,7 @@
 # Description
 The function calculating expected value of observable by Wick theorem.
 
-# Input
+# Arguments
 - `G::Matrix{<:Number}`: Green function G_ij = ⟨ϕ|c^dag_i c_j|φ⟩ = I - ⟨ϕ|c_i c^dag_j|φ⟩
 - `indices::Int...`: the indices corresponding to the base operators
 
@@ -12,13 +12,12 @@ The function calculating expected value of observable by Wick theorem.
 - `::Number`: expected value of observable
 
 # Warning
-`wick(G::Matrix{<:Number}, indices::Int...)` provides a general method.
+wick(G::Matrix{<:Number}, indices::Int...) provides a general `wick` method.
 However, due to the large number of the built-in function `_permutation_sign` called,
 the efficiency of calculating the expectation of n-body operator with it decreases rapidly with n.
 It is recommended to use `_auto_wick_text` to generate the required `wick` method.
 """
 function wick(G::Matrix{<:Number}, indices::Int...)
-    @warn @which wick(G, indices...)
     @warn "The general `wick` method called is severely underperforming because of the frequent use of `_permutation_sign`!"
     @warn "It is recommended to use `_auto_wick_text` in `src/action/wick.jl` to generate the corresponding `wick` method."
     @assert mod(length(indices), 2) == 0 "The observable is beyond the measurable range of Slater's determinant space"

@@ -39,27 +39,31 @@ getSubTypes(op::AnyonOperator) = map(getSubType, op.subscripts)
 
 """
     const BosonOperator{K} = AnyonOperator{0, K}
-    const BosonAnnihilationOperator = BosonOperator{:a}
-    const BosonCreationOperator = BosonOperator{:c}
 """
 const BosonOperator{K} = AnyonOperator{0, K}
-
+"""
+    const BosonAnnihilationOperator = BosonOperator{:a}
+"""
 const BosonAnnihilationOperator = BosonOperator{:a}
 const BAOp = BosonAnnihilationOperator
-
+"""
+    const BosonCreationOperator = BosonOperator{:c}
+"""
 const BosonCreationOperator = BosonOperator{:c}
 const BCOp = BosonCreationOperator
 
 
 """
     const FermionOperator{K} = AnyonOperator{π, K}
-    const FermionAnnihilationOperator = FermionOperator{:a}
-    const FermionCreationOperator = FermionOperator{:c}
 """
 const FermionOperator{K} = AnyonOperator{π, K}
-
+"""
+    const FermionAnnihilationOperator = FermionOperator{:a}
+"""
 const FermionAnnihilationOperator = FermionOperator{:a}
 const FAOp = FermionAnnihilationOperator
-
+"""
+    const FermionCreationOperator = FermionOperator{:c}
+"""
 const FermionCreationOperator = FermionOperator{:c}
 const FCOp = FermionCreationOperator

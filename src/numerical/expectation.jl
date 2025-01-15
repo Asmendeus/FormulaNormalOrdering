@@ -2,7 +2,7 @@
     expectation(G::Matrix{<:Number}, op::MultiplyOperator, f::Function)
     expectation(G::Matrix{<:Number}, op::LinearOperator, f::Function)
 
-# Input
+# Arguments
 - `G::Matrix{<:Number}`: Green function G_ij = ⟨ϕ|c^dag_i c_j|φ⟩ = I - ⟨ϕ|c_i c^dag_j|φ⟩
 - `op::Union{MultiplyOperator, LinearOperator}`: operator with U(1) symmetry
 - `f::Function`: the function mapping a basic operator with specific subscripts to an index

@@ -1,3 +1,10 @@
+"""
+    swap(op1::AbstractBasicOperator, op2::AbstractBasicOperator;
+         deltaname::Union{Symbol, AbstractString}=:δ, idname::Union{Symbol, AbstractString}=:I)
+
+# Description
+Swap two basic operators and return a many-body operator.
+"""
 function swap(op1::AbstractBasicOperator, op2::AbstractBasicOperator;
               deltaname::Union{Symbol, AbstractString}=:δ, idname::Union{Symbol, AbstractString}=:I)
     if isa(op1, AbstractIdentityOperator) || isa(op2, AbstractIdentityOperator)

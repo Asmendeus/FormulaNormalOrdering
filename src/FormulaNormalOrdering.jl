@@ -17,7 +17,7 @@ include("Subscript/Subscript.jl")
 export AbstractNamedFactor, getFactor
 include("NamedFactor/AbstractNamedFactor.jl")
 
-export AbstractMultiplyFactor
+export AbstractMultiplyFactor, getName
 include("NamedFactor/MultiplyFactor/AbstractMultiplyFactor.jl")
 export KroneckerDelta, KDelta
 include("NamedFactor/MultiplyFactor/KroneckerDelta.jl")
