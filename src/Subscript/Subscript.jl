@@ -27,3 +27,4 @@ const Site = Subscript{:site}
 const Spin = Subscript{:spin}
 const Orbital = Subscript{:orbital}
 const Layer = Subscript{:layer}
+const Kpoint = Subscript{:kpoint}

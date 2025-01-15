@@ -9,7 +9,7 @@ import Combinatorics.permutations
 export AbstractSubscript, getSubType
 include("Subscript/AbstractSubscript.jl")
 
-export Subscript, getSubLabel, Site, Spin, Orbital, Layer
+export Subscript, getSubLabel, Site, Spin, Orbital, Layer, KPoint
 include("Subscript/Subscript.jl")
 
 
