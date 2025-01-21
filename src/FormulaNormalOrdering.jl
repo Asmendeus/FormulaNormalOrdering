@@ -1,9 +1,9 @@
 module FormulaNormalOrdering
 
-using AbstractTrees
-using DataStructures
-using LaTeXStrings
-import Combinatorics.permutations
+using Reexport
+using AbstractTrees, DataStructures
+@reexport using LaTeXStrings
+@reexport import Combinatorics.permutations
 
 ################# Subscript #################
 export AbstractSubscript, getSubType

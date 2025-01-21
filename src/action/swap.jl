@@ -36,7 +36,7 @@ function swap(op1::AbstractBasicOperator, op2::AbstractBasicOperator;
     end
 end
 
-function swap(op::MultiplyOperator)
+function swap(op::MultiplyOperator; deltaname::Union{Symbol, AbstractString}=:δ, idname::Union{Symbol, AbstractString}=:I)
     @assert length(op.operators) == 2 "The number of basic operators that make up the multiply operator must be 2!"
-    return op.factor * swap(op.operators[1], op.operators[2])
+    return op.factor * swap(op.operators[1], op.operators[2]; deltaname=deltaname, idname=idname)
 end
