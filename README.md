@@ -80,7 +80,7 @@ Some methods: `text`, `value`, `swap`, `sort`, `wick`, `expectation`
 
 **numerical methods**
 
-`wick`: solve the expected value of a many-body operator without a factor in the form of $c^\dag\cdots c^\dag c\cdots c$ (with charge U(1) symmetry) by single-particle Green's function and wick theorem.
+`wick`: solve the expected value of a many-body operator without a factor in the form of $c^\dagger\cdots c^\dagger c\cdots c$ (with charge U(1) symmetry) by single-particle Green's function and wick theorem.
 
 `expectation`: solve the expected value of a general many-body operator (low efficiency, for large-scale repeated calculation, it is recommended to use the `wick` function after `sort` the many-body operator).
 
@@ -200,7 +200,7 @@ function sort(op::LinearOperator; kwargs...)
 
 ### Numerical Actions
 
-The function `wick` solves the expected value of a many-body operator without a factor in the form of $c^\dag\cdots c^\dag c\cdots c$ (with charge U(1) symmetry) by single-particle Green's function and wick theorem. The input argument `G` is the single-particle Green's function, $G_{ij} = ⟨ϕ|c^\dag_i c_j|φ⟩$, and each index in `indices` corresponds to the subscripts of a fermion operator.
+The function `wick` solves the expected value of a many-body operator without a factor in the form of $c^\dagger\cdots c^\dagger c\cdots c$ (with charge U(1) symmetry) by single-particle Green's function and wick theorem. The input argument `G` is the single-particle Green's function, $G_{ij} = ⟨ϕ|c^\dagger_i c_j|φ⟩$, and each index in `indices` corresponds to the subscripts of a fermion operator.
 
 ```julia
 function wick(G::Matrix{<:Number}, indices::Int...)
