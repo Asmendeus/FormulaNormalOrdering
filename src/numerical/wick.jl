@@ -35,6 +35,20 @@ function _permutation_sign(p)
     return det(perm_matrix) == 1 ? 1 : -1
 end
 
+"""
+    function wick(G::Matrix{<:Number}, dict::Dict{<:Tuple{Vararg{Int64}}, <:Number})
+
+# Arguments
+- `G::Matrix{<:Number}`: Green function G_ij = ⟨ϕ|c^dag_i c_j|φ⟩ = I - ⟨ϕ|c_i c^dag_j|φ⟩
+- `dict::Dict{<:Tuple{Vararg{Int64}}, <:Number})`: the `Dict` instance converted from a many-body operator by `Op2Dict`
+
+# Return
+- `::Number`: expected value of observable
+"""
+function wick(G::Matrix{<:Number}, dict::Dict{<:Tuple{Vararg{Int64}}, <:Number})
+    return sum([value*wick(G, key...) for (key, value) in dict])
+end
+
 
 # automatically generate the text of `wick` for n-body operator
 function _auto_wick_text(n::Int)
@@ -84,6 +98,9 @@ function _auto_wick_text(n::Int)
     close(f)
 end
 
+function wick(::Matrix{<:Number})   # The expectation of a constant is itself
+    return 1
+end
 function wick(G::Matrix{<:Number}, i1::Int, j1::Int)
     return G[i1,j1]
 end
@@ -124,6 +141,128 @@ function wick(G::Matrix{<:Number}, i1::Int, i2::Int, i3::Int, i4::Int, j1::Int, 
           - G[i4,j4] * G[i3,j2] * G[i2,j3] * G[i1,j1]
           - G[i4,j4] * G[i3,j3] * G[i2,j1] * G[i1,j2]
           + G[i4,j4] * G[i3,j3] * G[i2,j2] * G[i1,j1])
+end
+function wick(G::Matrix{<:Number}, i1::Int, i2::Int, i3::Int, i4::Int, i5::Int, j1::Int, j2::Int, j3::Int, j4::Int, j5::Int)
+    return (G[i5,j1] * G[i4,j2] * G[i3,j3] * G[i2,j4] * G[i1,j5]
+          - G[i5,j1] * G[i4,j2] * G[i3,j3] * G[i2,j5] * G[i1,j4]
+          - G[i5,j1] * G[i4,j2] * G[i3,j4] * G[i2,j3] * G[i1,j5]
+          + G[i5,j1] * G[i4,j2] * G[i3,j4] * G[i2,j5] * G[i1,j3]
+          + G[i5,j1] * G[i4,j2] * G[i3,j5] * G[i2,j3] * G[i1,j4]
+          - G[i5,j1] * G[i4,j2] * G[i3,j5] * G[i2,j4] * G[i1,j3]
+          - G[i5,j1] * G[i4,j3] * G[i3,j2] * G[i2,j4] * G[i1,j5]
+          + G[i5,j1] * G[i4,j3] * G[i3,j2] * G[i2,j5] * G[i1,j4]
+          + G[i5,j1] * G[i4,j3] * G[i3,j4] * G[i2,j2] * G[i1,j5]
+          - G[i5,j1] * G[i4,j3] * G[i3,j4] * G[i2,j5] * G[i1,j2]
+          - G[i5,j1] * G[i4,j3] * G[i3,j5] * G[i2,j2] * G[i1,j4]
+          + G[i5,j1] * G[i4,j3] * G[i3,j5] * G[i2,j4] * G[i1,j2]
+          + G[i5,j1] * G[i4,j4] * G[i3,j2] * G[i2,j3] * G[i1,j5]
+          - G[i5,j1] * G[i4,j4] * G[i3,j2] * G[i2,j5] * G[i1,j3]
+          - G[i5,j1] * G[i4,j4] * G[i3,j3] * G[i2,j2] * G[i1,j5]
+          + G[i5,j1] * G[i4,j4] * G[i3,j3] * G[i2,j5] * G[i1,j2]
+          + G[i5,j1] * G[i4,j4] * G[i3,j5] * G[i2,j2] * G[i1,j3]
+          - G[i5,j1] * G[i4,j4] * G[i3,j5] * G[i2,j3] * G[i1,j2]
+          - G[i5,j1] * G[i4,j5] * G[i3,j2] * G[i2,j3] * G[i1,j4]
+          + G[i5,j1] * G[i4,j5] * G[i3,j2] * G[i2,j4] * G[i1,j3]
+          + G[i5,j1] * G[i4,j5] * G[i3,j3] * G[i2,j2] * G[i1,j4]
+          - G[i5,j1] * G[i4,j5] * G[i3,j3] * G[i2,j4] * G[i1,j2]
+          - G[i5,j1] * G[i4,j5] * G[i3,j4] * G[i2,j2] * G[i1,j3]
+          + G[i5,j1] * G[i4,j5] * G[i3,j4] * G[i2,j3] * G[i1,j2]
+          - G[i5,j2] * G[i4,j1] * G[i3,j3] * G[i2,j4] * G[i1,j5]
+          + G[i5,j2] * G[i4,j1] * G[i3,j3] * G[i2,j5] * G[i1,j4]
+          + G[i5,j2] * G[i4,j1] * G[i3,j4] * G[i2,j3] * G[i1,j5]
+          - G[i5,j2] * G[i4,j1] * G[i3,j4] * G[i2,j5] * G[i1,j3]
+          - G[i5,j2] * G[i4,j1] * G[i3,j5] * G[i2,j3] * G[i1,j4]
+          + G[i5,j2] * G[i4,j1] * G[i3,j5] * G[i2,j4] * G[i1,j3]
+          + G[i5,j2] * G[i4,j3] * G[i3,j1] * G[i2,j4] * G[i1,j5]
+          - G[i5,j2] * G[i4,j3] * G[i3,j1] * G[i2,j5] * G[i1,j4]
+          - G[i5,j2] * G[i4,j3] * G[i3,j4] * G[i2,j1] * G[i1,j5]
+          + G[i5,j2] * G[i4,j3] * G[i3,j4] * G[i2,j5] * G[i1,j1]
+          + G[i5,j2] * G[i4,j3] * G[i3,j5] * G[i2,j1] * G[i1,j4]
+          - G[i5,j2] * G[i4,j3] * G[i3,j5] * G[i2,j4] * G[i1,j1]
+          - G[i5,j2] * G[i4,j4] * G[i3,j1] * G[i2,j3] * G[i1,j5]
+          + G[i5,j2] * G[i4,j4] * G[i3,j1] * G[i2,j5] * G[i1,j3]
+          + G[i5,j2] * G[i4,j4] * G[i3,j3] * G[i2,j1] * G[i1,j5]
+          - G[i5,j2] * G[i4,j4] * G[i3,j3] * G[i2,j5] * G[i1,j1]
+          - G[i5,j2] * G[i4,j4] * G[i3,j5] * G[i2,j1] * G[i1,j3]
+          + G[i5,j2] * G[i4,j4] * G[i3,j5] * G[i2,j3] * G[i1,j1]
+          + G[i5,j2] * G[i4,j5] * G[i3,j1] * G[i2,j3] * G[i1,j4]
+          - G[i5,j2] * G[i4,j5] * G[i3,j1] * G[i2,j4] * G[i1,j3]
+          - G[i5,j2] * G[i4,j5] * G[i3,j3] * G[i2,j1] * G[i1,j4]
+          + G[i5,j2] * G[i4,j5] * G[i3,j3] * G[i2,j4] * G[i1,j1]
+          + G[i5,j2] * G[i4,j5] * G[i3,j4] * G[i2,j1] * G[i1,j3]
+          - G[i5,j2] * G[i4,j5] * G[i3,j4] * G[i2,j3] * G[i1,j1]
+          + G[i5,j3] * G[i4,j1] * G[i3,j2] * G[i2,j4] * G[i1,j5]
+          - G[i5,j3] * G[i4,j1] * G[i3,j2] * G[i2,j5] * G[i1,j4]
+          - G[i5,j3] * G[i4,j1] * G[i3,j4] * G[i2,j2] * G[i1,j5]
+          + G[i5,j3] * G[i4,j1] * G[i3,j4] * G[i2,j5] * G[i1,j2]
+          + G[i5,j3] * G[i4,j1] * G[i3,j5] * G[i2,j2] * G[i1,j4]
+          - G[i5,j3] * G[i4,j1] * G[i3,j5] * G[i2,j4] * G[i1,j2]
+          - G[i5,j3] * G[i4,j2] * G[i3,j1] * G[i2,j4] * G[i1,j5]
+          + G[i5,j3] * G[i4,j2] * G[i3,j1] * G[i2,j5] * G[i1,j4]
+          + G[i5,j3] * G[i4,j2] * G[i3,j4] * G[i2,j1] * G[i1,j5]
+          - G[i5,j3] * G[i4,j2] * G[i3,j4] * G[i2,j5] * G[i1,j1]
+          - G[i5,j3] * G[i4,j2] * G[i3,j5] * G[i2,j1] * G[i1,j4]
+          + G[i5,j3] * G[i4,j2] * G[i3,j5] * G[i2,j4] * G[i1,j1]
+          + G[i5,j3] * G[i4,j4] * G[i3,j1] * G[i2,j2] * G[i1,j5]
+          - G[i5,j3] * G[i4,j4] * G[i3,j1] * G[i2,j5] * G[i1,j2]
+          - G[i5,j3] * G[i4,j4] * G[i3,j2] * G[i2,j1] * G[i1,j5]
+          + G[i5,j3] * G[i4,j4] * G[i3,j2] * G[i2,j5] * G[i1,j1]
+          + G[i5,j3] * G[i4,j4] * G[i3,j5] * G[i2,j1] * G[i1,j2]
+          - G[i5,j3] * G[i4,j4] * G[i3,j5] * G[i2,j2] * G[i1,j1]
+          - G[i5,j3] * G[i4,j5] * G[i3,j1] * G[i2,j2] * G[i1,j4]
+          + G[i5,j3] * G[i4,j5] * G[i3,j1] * G[i2,j4] * G[i1,j2]
+          + G[i5,j3] * G[i4,j5] * G[i3,j2] * G[i2,j1] * G[i1,j4]
+          - G[i5,j3] * G[i4,j5] * G[i3,j2] * G[i2,j4] * G[i1,j1]
+          - G[i5,j3] * G[i4,j5] * G[i3,j4] * G[i2,j1] * G[i1,j2]
+          + G[i5,j3] * G[i4,j5] * G[i3,j4] * G[i2,j2] * G[i1,j1]
+          - G[i5,j4] * G[i4,j1] * G[i3,j2] * G[i2,j3] * G[i1,j5]
+          + G[i5,j4] * G[i4,j1] * G[i3,j2] * G[i2,j5] * G[i1,j3]
+          + G[i5,j4] * G[i4,j1] * G[i3,j3] * G[i2,j2] * G[i1,j5]
+          - G[i5,j4] * G[i4,j1] * G[i3,j3] * G[i2,j5] * G[i1,j2]
+          - G[i5,j4] * G[i4,j1] * G[i3,j5] * G[i2,j2] * G[i1,j3]
+          + G[i5,j4] * G[i4,j1] * G[i3,j5] * G[i2,j3] * G[i1,j2]
+          + G[i5,j4] * G[i4,j2] * G[i3,j1] * G[i2,j3] * G[i1,j5]
+          - G[i5,j4] * G[i4,j2] * G[i3,j1] * G[i2,j5] * G[i1,j3]
+          - G[i5,j4] * G[i4,j2] * G[i3,j3] * G[i2,j1] * G[i1,j5]
+          + G[i5,j4] * G[i4,j2] * G[i3,j3] * G[i2,j5] * G[i1,j1]
+          + G[i5,j4] * G[i4,j2] * G[i3,j5] * G[i2,j1] * G[i1,j3]
+          - G[i5,j4] * G[i4,j2] * G[i3,j5] * G[i2,j3] * G[i1,j1]
+          - G[i5,j4] * G[i4,j3] * G[i3,j1] * G[i2,j2] * G[i1,j5]
+          + G[i5,j4] * G[i4,j3] * G[i3,j1] * G[i2,j5] * G[i1,j2]
+          + G[i5,j4] * G[i4,j3] * G[i3,j2] * G[i2,j1] * G[i1,j5]
+          - G[i5,j4] * G[i4,j3] * G[i3,j2] * G[i2,j5] * G[i1,j1]
+          - G[i5,j4] * G[i4,j3] * G[i3,j5] * G[i2,j1] * G[i1,j2]
+          + G[i5,j4] * G[i4,j3] * G[i3,j5] * G[i2,j2] * G[i1,j1]
+          + G[i5,j4] * G[i4,j5] * G[i3,j1] * G[i2,j2] * G[i1,j3]
+          - G[i5,j4] * G[i4,j5] * G[i3,j1] * G[i2,j3] * G[i1,j2]
+          - G[i5,j4] * G[i4,j5] * G[i3,j2] * G[i2,j1] * G[i1,j3]
+          + G[i5,j4] * G[i4,j5] * G[i3,j2] * G[i2,j3] * G[i1,j1]
+          + G[i5,j4] * G[i4,j5] * G[i3,j3] * G[i2,j1] * G[i1,j2]
+          - G[i5,j4] * G[i4,j5] * G[i3,j3] * G[i2,j2] * G[i1,j1]
+          + G[i5,j5] * G[i4,j1] * G[i3,j2] * G[i2,j3] * G[i1,j4]
+          - G[i5,j5] * G[i4,j1] * G[i3,j2] * G[i2,j4] * G[i1,j3]
+          - G[i5,j5] * G[i4,j1] * G[i3,j3] * G[i2,j2] * G[i1,j4]
+          + G[i5,j5] * G[i4,j1] * G[i3,j3] * G[i2,j4] * G[i1,j2]
+          + G[i5,j5] * G[i4,j1] * G[i3,j4] * G[i2,j2] * G[i1,j3]
+          - G[i5,j5] * G[i4,j1] * G[i3,j4] * G[i2,j3] * G[i1,j2]
+          - G[i5,j5] * G[i4,j2] * G[i3,j1] * G[i2,j3] * G[i1,j4]
+          + G[i5,j5] * G[i4,j2] * G[i3,j1] * G[i2,j4] * G[i1,j3]
+          + G[i5,j5] * G[i4,j2] * G[i3,j3] * G[i2,j1] * G[i1,j4]
+          - G[i5,j5] * G[i4,j2] * G[i3,j3] * G[i2,j4] * G[i1,j1]
+          - G[i5,j5] * G[i4,j2] * G[i3,j4] * G[i2,j1] * G[i1,j3]
+          + G[i5,j5] * G[i4,j2] * G[i3,j4] * G[i2,j3] * G[i1,j1]
+          + G[i5,j5] * G[i4,j3] * G[i3,j1] * G[i2,j2] * G[i1,j4]
+          - G[i5,j5] * G[i4,j3] * G[i3,j1] * G[i2,j4] * G[i1,j2]
+          - G[i5,j5] * G[i4,j3] * G[i3,j2] * G[i2,j1] * G[i1,j4]
+          + G[i5,j5] * G[i4,j3] * G[i3,j2] * G[i2,j4] * G[i1,j1]
+          + G[i5,j5] * G[i4,j3] * G[i3,j4] * G[i2,j1] * G[i1,j2]
+          - G[i5,j5] * G[i4,j3] * G[i3,j4] * G[i2,j2] * G[i1,j1]
+          - G[i5,j5] * G[i4,j4] * G[i3,j1] * G[i2,j2] * G[i1,j3]
+          + G[i5,j5] * G[i4,j4] * G[i3,j1] * G[i2,j3] * G[i1,j2]
+          + G[i5,j5] * G[i4,j4] * G[i3,j2] * G[i2,j1] * G[i1,j3]
+          - G[i5,j5] * G[i4,j4] * G[i3,j2] * G[i2,j3] * G[i1,j1]
+          - G[i5,j5] * G[i4,j4] * G[i3,j3] * G[i2,j1] * G[i1,j2]
+          + G[i5,j5] * G[i4,j4] * G[i3,j3] * G[i2,j2] * G[i1,j1])
 end
 function wick(G::Matrix{<:Number}, i1::Int, i2::Int, i3::Int, i4::Int, i5::Int, i6::Int, j1::Int, j2::Int, j3::Int, j4::Int, j5::Int, j6::Int)
     return (G[i6,j1] * G[i5,j2] * G[i4,j3] * G[i3,j4] * G[i2,j5] * G[i1,j6]

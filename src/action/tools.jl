@@ -4,10 +4,11 @@
 # Description
 return a new named factor that replaces the factor of the input factor with 1
 """
-normalize_factor(fac::KroneckerDelta) = typeof(fac)(fac.name, fac.subscripts, 1)
-normalize_factor(fac::NumberFactor) = typeof(fac)(fac.name, fac.value, 1)
-normalize_factor(fac::OperatorFactor) = typeof(fac)(fac.name, fac.subscripts, fac.values, 1)
-normalize_factor(fac::LinearFactor) = typeof(fac)(fac.summation, 1)
+normalize_factor(fac::SymbolFactor) = SymbolFactor(fac.name, fac.subscripts, 1)
+normalize_factor(fac::KroneckerDelta) = KroneckerDelta{getSubType(fac)}(fac.name, fac.subscripts, 1)
+normalize_factor(fac::NumberFactor) = NumberFactor(fac.name, fac.value, 1)
+normalize_factor(fac::OperatorFactor) = OperatorFactor(fac.name, fac.subscripts, fac.values, 1)
+normalize_factor(fac::LinearFactor) = LinearFactor(fac)(fac.summation, 1)
 
 """
     multiply_factor_to_all(fac::AbstractLinearFactor)
@@ -15,7 +16,7 @@ normalize_factor(fac::LinearFactor) = typeof(fac)(fac.summation, 1)
 # Description
 return a new linear factor that multiply the factor to all summation factors
 """
-multiply_factor_to_all(fac::LinearFactor) = map(x->fac.factor * x, fac.summation)
+multiply_factor_to_all(fac::LinearFactor) = fac.factor == 1 ? fac : map(x->fac.factor * x, fac.summation)
 
 """
     multiply_factor_to_all(op::LinearOperator)
@@ -23,7 +24,7 @@ multiply_factor_to_all(fac::LinearFactor) = map(x->fac.factor * x, fac.summation
 # Description
 return a new linear operator that multiply the factor to all summation operators
 """
-multiply_factor_to_all(op::LinearOperator) = LinearOperator(map(x->op.factor * x, op.operators))
+multiply_factor_to_all(op::LinearOperator) = op.factor == 1 ? op : LinearOperator(map(x->op.factor * x, op.operators))
 
 """
     isca(op::MultiplyOperator)
@@ -43,4 +44,18 @@ end
 
 function isca(op::LinearOperator)::Bool
     return all(isca, op.operators)
+end
+
+
+############### Base ###############
+function Base.:+(dict1::Dict{<:Tuple{Vararg{Int64}}, <:Number}, dict2::Dict{<:Tuple{Vararg{Int64}}, <:Number})
+    dict = Dict{Tuple{Vararg{Int64}}, Number}(deepcopy(dict1))
+    for (key, value) in dict2
+        if haskey(dict, key)
+            dict[key] += value
+        else
+            dict[key] = value
+        end
+    end
+    return dict
 end

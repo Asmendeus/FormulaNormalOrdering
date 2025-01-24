@@ -4,8 +4,8 @@ using Test
 
 @testset "numerical test: wick" begin
     tol = 1e-12
-    num_nan_wick = 0
-    num_nan_expect = 0
+    num_nan_expectation = 0
+    num_nan_ExpectationValue = 0
 
     # random free spinless fermion Hamiltonian
     L = 10  # 1-D lattice length
@@ -24,31 +24,32 @@ using Test
         w = wick(G′, i1, j1)
         e = ExpectationValue(G, [i1, j1], [1,])
         (!isnan(w) && !isnan(e)) && (@test abs(w - e) < tol)
-        isnan(w) && (num_nan_wick += 1)
-        isnan(e) && (num_nan_expect += 1)
+        isnan(w) && (num_nan_expectation += 1)
+        isnan(e) && (num_nan_ExpectationValue += 1)
     end
     for i1 in 1:L, i2 in 1:L, j1 in 1:L, j2 in 1:L
         w = wick(G′, i1, i2, j1, j2)
         e = ExpectationValue(G, [i1, i2, j1, j2], [1, 2])
         (!isnan(w) && !isnan(e)) && (@test abs(w - e) < tol)
-        isnan(w) && (num_nan_wick += 1)
-        isnan(e) && (num_nan_expect += 1)
+        isnan(w) && (num_nan_expectation += 1)
+        isnan(e) && (num_nan_ExpectationValue += 1)
     end
     for i1 in 1:L, i2 in 1:L, i3 in 1:L, j1 in 1:L, j2 in 1:L, j3 in 1:L
         w = wick(G′, i1, i2, i3, j1, j2, j3)
         e = ExpectationValue(G, [i1, i2, i3, j1, j2, j3], [1, 2, 3])
         !isnan(w) && (!isnan(e) && @test abs(w - e) < tol)
-        isnan(w) && (num_nan_wick += 1)
-        isnan(e) && (num_nan_expect += 1)
+        isnan(w) && (num_nan_expectation += 1)
+        isnan(e) && (num_nan_ExpectationValue += 1)
     end
-    println("number of `NaN` from `wick` is $num_nan_wick")
-    println("number of `NaN` from `ExpectationValue` is $num_nan_expect")
+    println("number of `NaN` from `expectation` is $num_nan_expectation")
+    println("number of `NaN` from `ExpectationValue` is $num_nan_ExpectationValue")
 end
 
-@testset "numerical test: expectation" begin
+@testset "numerical test: expectation and Op2Dict & wick" begin
     tol = 1e-12
+    num_nan_expectation = 0
     num_nan_wick = 0
-    num_nan_expect = 0
+    num_nan_ExpectationValue = 0
 
     # random free spinless fermion Hamiltonian
     L = 10  # 1-D lattice length
@@ -80,25 +81,41 @@ end
         w_jjii = expectation(G′, fa1*fa2*fc1*fc2, x->x.subscripts[1].label)
         w_1add4 = expectation(G′, fc1*fc2*fa1*fa2+fa1*fa2*fc1*fc2, x->x.subscripts[1].label)
 
-        !isnan(w_iijj) && (!isnan(e_iijj) && @test abs(w_iijj - e_iijj) < tol)
-        isnan(w_iijj) && (num_nan_wick += 1)
-        isnan(e_iijj) && (num_nan_expect += 1)
+        w2_iijj = wick(G′, Op2Dict(fc1*fc2*fa1*fa2, x->x.subscripts[1].label))
+        w2_ijij = wick(G′, Op2Dict(sort(fc1*fa1*fc2*fa2), x->x.subscripts[1].label))
+        w2_jiji = wick(G′, Op2Dict(sort(fa1*fc1*fa2*fc2), x->x.subscripts[1].label))
+        w2_jjii = wick(G′, Op2Dict(sort(fa1*fa2*fc1*fc2), x->x.subscripts[1].label))
+        w2_1add4 = wick(G′, Op2Dict(sort(fc1*fc2*fa1*fa2+fa1*fa2*fc1*fc2), x->x.subscripts[1].label))
 
-        !isnan(w_ijij) && (!isnan(e_ijij) && @test abs(w_ijij - e_ijij) < tol)
-        isnan(w_ijij) && (num_nan_wick += 1)
-        isnan(e_ijij) && (num_nan_expect += 1)
+        !isnan(w_iijj) && !isnan(e_iijj) && (@test abs(w_iijj - e_iijj) < tol)
+        !isnan(w2_iijj) && !isnan(e_iijj) && (@test abs(w2_iijj - e_iijj) < tol)
+        isnan(w_iijj) && (num_nan_expectation += 1)
+        isnan(w2_iijj) && (num_nan_wick += 1)
+        isnan(e_iijj) && (num_nan_ExpectationValue += 1)
 
-        !isnan(w_jiji) && (!isnan(e_jiji) && @test abs(w_jiji - e_jiji) < tol)
-        isnan(w_jiji) && (num_nan_wick += 1)
-        isnan(e_jiji) && (num_nan_expect += 1)
+        !isnan(w_ijij) && !isnan(e_ijij) && (@test abs(w_ijij - e_ijij) < tol)
+        !isnan(w2_ijij) && !isnan(e_ijij) && (@test abs(w2_ijij - e_ijij) < tol)
+        isnan(w_ijij) && (num_nan_expectation += 1)
+        isnan(w2_ijij) && (num_nan_wick += 1)
+        isnan(e_ijij) && (num_nan_ExpectationValue += 1)
 
-        !isnan(w_jjii) && (!isnan(e_jjii) && @test abs(w_jjii - e_jjii) < tol)
-        isnan(w_jjii) && (num_nan_wick += 1)
-        isnan(e_jjii) && (num_nan_expect += 1)
+        !isnan(w_jiji) && !isnan(e_jiji) && (@test abs(w_jiji - e_jiji) < tol)
+        !isnan(w2_jiji) && !isnan(e_jiji) && (@test abs(w2_jiji - e_jiji) < tol)
+        isnan(w_jiji) && (num_nan_expectation += 1)
+        isnan(w2_jiji) && (num_nan_wick += 1)
+        isnan(e_jiji) && (num_nan_ExpectationValue += 1)
+
+        !isnan(w_jjii) && !isnan(e_jjii) && (@test abs(w_jjii - e_jjii) < tol)
+        !isnan(w2_jjii) && !isnan(e_jjii) && (@test abs(w2_jjii - e_jjii) < tol)
+        isnan(w_jjii) && (num_nan_expectation += 1)
+        isnan(w2_jjii) && (num_nan_wick += 1)
+        isnan(e_jjii) && (num_nan_ExpectationValue += 1)
 
         @test abs(w_iijj + w_jjii - w_1add4) < tol
+        @test abs(w2_iijj + w2_jjii - w2_1add4) < tol
     end
 
-    println("number of `NaN` from `wick` is $num_nan_wick")
-    println("number of `NaN` from `ExpectationValue` is $num_nan_expect")
+    println("number of `NaN` from `expectation` is $num_nan_expectation")
+    println("number of `NaN` from `Op2Dict & wick` is $num_nan_wick")
+    println("number of `NaN` from `ExpectationValue` is $ExpectationValue")
 end

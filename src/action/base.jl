@@ -1,8 +1,10 @@
 ################ IO ################
-function Base.show(io::IO, op::AbstractNamedFactor)
-    print(io, text(op))
+function Base.show(io::IO, fac::AbstractNamedFactor)
+    println(string(typeof(fac)) * ":")
+    print(io, text(fac))
 end
 function Base.show(io::IO, op::AbstractOperator)
+    println(string(typeof(op)) * ":")
     print(io, text(op))
 end
 

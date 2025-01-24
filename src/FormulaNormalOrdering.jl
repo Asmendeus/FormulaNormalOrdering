@@ -84,5 +84,19 @@ export wick
 include("numerical/wick.jl")
 export expectation
 include("numerical/expectation.jl")
+export Op2Dict
+include("numerical/Op2Dict.jl")
+
+
+################# Symmetry #################
+# export U1Flip, hasU1
+# include("symmetry/U1.jl")
+# export Z2Flip, hasZ2
+# include("symmetry/Z2.jl")
+# export SU2Flip, hasSU2
+# include("symmetry/SU2.jl")
+# export TRSFlip, hasTRS
+# include("symmetry/TRS.jl")
+
 
 end # module FormulaNormalOrdering

@@ -11,14 +11,26 @@ text(sub::Subscript)::LaTeXString = string(getSubLabel(sub))
 
 
 # =============== Factor ===============
-#? TODO: Text can be simplified when factor is 1 or -1
-text(num::Number)::LaTeXString = string(num)
-text(fac::SymbolFactor)::LaTeXString = text(fac.factor) * (isa(fac.factor, Number) ? " × " : "") * string(fac.name)
-text(fac::KroneckerDelta)::LaTeXString = text(fac.factor) * (isa(fac.factor, Number) ? " × " : "") * string(fac.name) * "_{$(_string_subscripts(fac.subscripts))}"
-text(fac::NumberFactor)::LaTeXString = text(fac.factor) * (isa(fac.factor, Number) ? " × " : "") * string(fac.name)
-text(fac::OperatorFactor)::LaTeXString = text(fac.factor) * (isa(fac.factor, Number) ? " × " : "") * string(fac.name) * "_{$(_string_subscripts(fac.subscripts))}"
+function text(num::Number; isfactor::Bool=true)::LaTeXString
+    if isfactor
+        if num == 1
+            return ""
+        elseif num == -1
+            return "-"
+        else
+            return string(num) * " × "
+        end
+    else
+        return string(num)
+    end
+end
+
+text(fac::SymbolFactor)::LaTeXString = text(fac.factor) * string(fac.name)
+text(fac::KroneckerDelta)::LaTeXString = text(fac.factor) * string(fac.name) * "_{$(_string_subscripts(fac.subscripts))}"
+text(fac::NumberFactor)::LaTeXString = text(fac.factor) * string(fac.name)
+text(fac::OperatorFactor)::LaTeXString = text(fac.factor) * string(fac.name) * "_{$(_string_subscripts(fac.subscripts))}"
 function text(fac::LinearFactor)
-    str = text(fac.factor) * (isa(fac.factor, Number) ? " × " : "")
+    str = text(fac.factor)
     str *= "("
     str *= text(fac.summation[1])
     for f in fac.summation[2:end]
@@ -36,14 +48,14 @@ function text(op::AnyonOperator{θ, K})::LaTeXString where {θ, K}
 end
 text(op::IdentityOperator)::LaTeXString = string(op.name)
 function text(op::MultiplyOperator)::LaTeXString
-    str = text(op.factor) * " × "
+    str = text(op.factor) * (isa(op.factor, Number) ? "" : " × ")
     for o in op.operators
         str *= text(o)
     end
     return str
 end
 function text(op::LinearOperator)::LaTeXString
-    str = text(op.factor) * " × "
+    str = text(op.factor) * (isa(op.factor, Number) ? "" : " × ")
     str *= "("
     str *= text(op.operators[1])
     for o in op.operators[2:end]

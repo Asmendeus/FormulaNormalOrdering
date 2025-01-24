@@ -1,7 +1,7 @@
 name = "FormulaNormalOrdering"
 uuid = "b6870bba-5d43-48d0-b8e3-ee94aafc0d8b"
 authors = ["Ji Jia-heng <1422805255@qq.com>"]
-version = "0.2.0"
+version = "0.2.1"
 
 [deps]
 AbstractTrees = "1520ce14-60c1-5f80-bbc7-55ef81b5835c"

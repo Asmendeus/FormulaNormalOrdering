@@ -7,7 +7,8 @@ using Test
 
     δ_ijk = KDelta(:δ, (Site(:i), Site("j"), Site(L"k")))
     @test getSubType(δ_ijk) == :site
-    @test text(δ_ijk) == LaTeXString("1 × δ_{i,j,\$k\$}")
+    @test text(δ_ijk) == LaTeXString("δ_{i,j,\$k\$}")
+    @test text(-δ_ijk) == LaTeXString("-δ_{i,j,\$k\$}")
     @test getFactor(δ_ijk) == 1
     @test getName(δ_ijk) == :δ
     @test -δ_ijk == KDelta(:δ, (Site(:i), Site("j"), Site(L"k")), -1)

@@ -2,6 +2,16 @@
 
 All notable changes to `FormulaNormalOrdering` will be documented in this file.
 
+## [v0.2.1] - 2025-01-24
+
+### Added
+
+- Add function `Op2Dict`
+
+### Improved
+
+- Optimize the output text when the number factors are 1 and -1
+
 ## [v0.2.0] - 2025-01-22
 
 ### Overview
@@ -18,8 +28,8 @@ This is the first official release of `FormulaNormalOrdering`, a package designe
 
 ### Known Issues
 
-- Text is redundant when the number coefficient is 1 or -1
-- The function of merging similar items of coefficients and operators has not been realized
-- The named factors of different orders are not judged to be equal
-- Lack of numerical methods for transforming operators into number factors and indices
-- Lack of symmetry related methods
+* [X] Text is redundant when the number coefficient is 1 or -1
+* [ ] The feature of merging similar items of factors and operators has not been realized
+* [ ] The named factors of different orders are not judged to be equal
+* [X] Lack of numerical methods for transforming operators into number factors and indices
+* [ ] Lack of symmetry related methods
